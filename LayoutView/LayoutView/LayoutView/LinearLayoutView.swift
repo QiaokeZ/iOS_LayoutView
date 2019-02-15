@@ -78,33 +78,9 @@ extension LinearLayoutView {
     }
 
     private func setLayoutViewFrame(_ from: LinearLayoutView) {
-        let size = getViewChildTotalSize(from)
+        from.frame.size =  CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
         if from.frame.origin == .zero {
             from.frame.origin = CGPoint(x: from.margin + from.marginLeft, y: from.margin + from.marginTop)
-        }
-        if from.frame.size.width == 0 {
-            switch from.width {
-            case .fill:
-                if let value = from.superview {
-                    from.frame.size.width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
-                }
-            case .wrap:
-                from.frame.size.width = size.width
-            case .px(let value):
-                from.frame.size.width = value
-            }
-        }
-        if from.frame.size.height == 0 {
-            switch from.height {
-            case .fill:
-                if let value = from.superview {
-                    from.frame.size.height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
-                }
-            case .wrap:
-                from.frame.size.height = size.height
-            case .px(let value):
-                from.frame.size.height = value
-            }
         }
     }
 
@@ -195,14 +171,16 @@ extension LinearLayoutView {
             case .fill:
                 if let value = from.superview {
                     width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
-                    if let child = value as? LinearLayoutView {
-                        width = getChildViewWidth(child) - from.margin * 2 - from.marginLeft - from.marginRight
-                        if child.direction == .horizontal {
-                            for view in child.subviews {
-                                if view == from {
-                                    break
+                    if value is LinearLayoutView || value is RelativeLayoutView {
+                        width = getChildViewWidth(value) - from.margin * 2 - from.marginLeft - from.marginRight
+                        if let child = value as? LinearLayoutView {
+                            if child.direction == .horizontal {
+                                for view in child.subviews {
+                                    if view == from {
+                                        break
+                                    }
+                                    width -= view.frame.width + view.margin * 2 + view.marginLeft + view.marginRight
                                 }
-                                width -= view.frame.width + view.margin * 2 + view.marginLeft + view.marginRight
                             }
                         }
                     }
@@ -226,14 +204,16 @@ extension LinearLayoutView {
             case .fill:
                 if let value = from.superview {
                     height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
-                    if let child = value as? LinearLayoutView {
-                        height = getChildViewHeight(child) - from.margin * 2 - from.marginTop - from.marginBottom
-                        if child.direction == .vertical {
-                            for view in child.subviews {
-                                if view == from {
-                                    break
+                    if value is LinearLayoutView || value is RelativeLayoutView {
+                        height = getChildViewHeight(value) - from.margin * 2 - from.marginTop - from.marginBottom
+                        if let child = value as? LinearLayoutView {
+                            if child.direction == .vertical {
+                                for view in child.subviews {
+                                    if view == from {
+                                        break
+                                    }
+                                    height -= view.frame.height + view.margin * 2 + view.marginTop + view.marginBottom
                                 }
-                                height -= view.frame.height + view.margin * 2 + view.marginTop + view.marginBottom
                             }
                         }
                     }
@@ -255,13 +235,21 @@ extension LinearLayoutView {
         for view in from.subviews {
             if from.direction == .horizontal {
                 size.width += getChildViewWidth(view) + view.margin * 2 + view.marginLeft + view.marginRight
+                let height = getChildViewHeight(view) + view.margin * 2 + view.marginTop + view.marginBottom
+                if height > size.height{
+                   size.height = height
+                }
             } else {
                 size.height += getChildViewHeight(view) + view.margin * 2 + view.marginTop + view.marginBottom
+                let width = getChildViewWidth(view) + view.margin * 2 + view.marginLeft + view.marginRight
+                if width > size.width{
+                    size.width = width
+                }
             }
         }
         return size
     }
-
+    
     private func getViewChildTotalSize(_ from: LinearLayoutView) -> CGSize {
         var size = CGSize.zero
         for view in from.subviews {

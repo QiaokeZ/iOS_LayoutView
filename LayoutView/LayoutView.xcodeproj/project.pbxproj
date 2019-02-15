@@ -108,9 +108,9 @@
 			isa = PBXGroup;
 			children = (
 				84E5722E2216998800572DF8 /* LinearViewTest1Controller.swift */,
+				84E572312216998800572DF8 /* LinearViewTest2Controller.swift */,
 				84E5722F2216998800572DF8 /* LinearViewTest3Controller.swift */,
 				84E572302216998800572DF8 /* LinearViewTest4Controller.swift */,
-				84E572312216998800572DF8 /* LinearViewTest2Controller.swift */,
 			);
 			path = LinearLayoutViewExample;
 			sourceTree = "<group>";
@@ -118,11 +118,11 @@
 		84E572332216998800572DF8 /* RelativeLayoutViewExample */ = {
 			isa = PBXGroup;
 			children = (
+				84E572382216998800572DF8 /* RelativeViewTest1Controller.swift */,
+				84E572372216998800572DF8 /* RelativeViewTest2Controller.swift */,
 				84E572342216998800572DF8 /* RelativeViewTest3Controller.swift */,
 				84E572352216998800572DF8 /* RelativeViewTest4Controller.swift */,
 				84E572362216998800572DF8 /* RelativeViewTest5Controller.swift */,
-				84E572372216998800572DF8 /* RelativeViewTest2Controller.swift */,
-				84E572382216998800572DF8 /* RelativeViewTest1Controller.swift */,
 				84E572392216998800572DF8 /* RelativeViewTest6Controller.swift */,
 			);
 			path = RelativeLayoutViewExample;

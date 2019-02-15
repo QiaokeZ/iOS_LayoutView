@@ -11,15 +11,10 @@ import WebKit
 
 class LinearViewTest1Controller: UIViewController {
 
-    private let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
-
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        let add = UIBarButtonItem(title: "添加", style: .done, target: self, action: #selector(barButtonItemClick))
-        let delete = UIBarButtonItem(title: "删除", style: .done, target: self, action: #selector(barButtonItemClick))
-        navigationItem.setRightBarButtonItems([add, delete], animated: true)
         parpareView()
     }
 
@@ -37,24 +32,9 @@ class LinearViewTest1Controller: UIViewController {
 }
 
 extension LinearViewTest1Controller {
-
-    @objc private func barButtonItemClick(item: UIBarButtonItem) {
-        if item.title == "添加" {
-            let label = UILabel()
-            label.width = .fill
-            label.margin = 10
-            label.weight = 1
-            label.backgroundColor = UIColor.random
-            rootView.addSubview(label)
-        } else {
-            rootView.subviews.first?.removeFromSuperview()
-        }
-        UIView.animate(withDuration: 0.4) {
-            self.rootView.layoutIfNeeded()
-        }
-    }
-
+    
     private func parpareView() {
+        let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.margin = 10
         view.addSubview(rootView)
