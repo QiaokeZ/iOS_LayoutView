@@ -116,7 +116,7 @@ extension LinearLayoutView {
             }
             lastView = view
         }
-        let totalSize = getViewChildTotalSize(from)
+        let childTotalSize = getViewChildTotalSize(from)
         for view in from.subviews {
             if from.direction == .horizontal {
                 let match = view.gravity != .top && view.gravity != .center && view.gravity != .bottom
@@ -125,9 +125,9 @@ extension LinearLayoutView {
                     if match {
                         view.frame.origin.y = (from.frame.height - view.frame.height) / 2
                     }
-                    view.frame.origin.x = view.frame.origin.x + (from.frame.width - totalSize.width) / 2
+                    view.frame.origin.x = view.frame.origin.x + (from.frame.width - childTotalSize.width) / 2
                 case .centerHorizontal:
-                    view.frame.origin.x = view.frame.origin.x + (from.frame.width - totalSize.width) / 2
+                    view.frame.origin.x = view.frame.origin.x + (from.frame.width - childTotalSize.width) / 2
                 case .centerVertical:
                     if match {
                         view.frame.origin.y = (from.frame.height - view.frame.height) / 2
@@ -146,9 +146,9 @@ extension LinearLayoutView {
                     if match {
                         view.frame.origin.x = (from.frame.width - view.frame.width) / 2
                     }
-                    view.frame.origin.y = view.frame.origin.y + (from.frame.height - totalSize.height) / 2
+                    view.frame.origin.y = view.frame.origin.y + (from.frame.height - childTotalSize.height) / 2
                 case .centerVertical:
-                    view.frame.origin.y = view.frame.origin.y + (from.frame.height - totalSize.height) / 2
+                    view.frame.origin.y = view.frame.origin.y + (from.frame.height - childTotalSize.height) / 2
                 case .centerHorizontal:
                     if match {
                         view.frame.origin.x = (from.frame.width - view.frame.width) / 2
