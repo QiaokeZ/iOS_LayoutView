@@ -1,10 +1,3 @@
-//
-//  RelativeViewTest6Controller.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/22.
-//  Copyright © 2019 zhouqiao. All rights reserved.
-//
 
 import UIKit
 
@@ -15,18 +8,6 @@ class RelativeViewTest6Controller: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
         parpareView()
-    }
-    
-    override var prefersStatusBarHidden: Bool{
-        return false
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation{
-        return .none
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return .lightContent
     }
 }
 

@@ -44,13 +44,13 @@ extension RelativeLayoutView {
             if view is LinearLayoutView || view is RelativeLayoutView {
                 view.layoutIfNeeded()
             } else {
-                view.frame.size = getViewSize(view)
+                view.frame.size = CGSize(width: getChildViewWidth(view), height: getChildViewHeight(view))
             }
         }
     }
 
     private func setChildViewOrigin(_ from: RelativeLayoutView) {
-        let parentSize = getViewSize(from)
+        let parentSize = CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
         for view in from.subviews {
             view.frame.origin = CGPoint(x: view.margin + view.marginLeft, y: view.margin + view.marginTop)
             if let toTopView = view.toTopOf {
@@ -102,67 +102,50 @@ extension RelativeLayoutView {
     }
 
     private func setLayoutViewFrame(_ from: RelativeLayoutView) {
+        from.frame.size = CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
         if from.frame.origin == .zero {
             from.frame.origin = CGPoint(x: from.margin + from.marginLeft, y: from.margin + from.marginTop)
         }
-        if from.frame.size.width == 0 {
-            switch from.width {
-            case .fill:
-                if let value = from.superview {
-                    from.frame.size.width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
-                }
-            case .wrap:
-                from.frame.size.width = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginLeft }.max() ?? 0
-            case .px(let value):
-                from.frame.size.width = value
-            }
-        }
-        if from.frame.size.height == 0 {
-            switch from.height {
-            case .fill:
-                if let value = from.superview {
-                    from.frame.size.height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
-                }
-            case .wrap:
-                from.frame.size.height = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginBottom }.max() ?? 0
-            case .px(let value):
-                from.frame.size.height = value
-            }
-        }
     }
-
-    private func getViewSize(_ from: UIView) -> CGSize {
-        var size = from.frame.size
-        if size.width == 0 {
+    
+    
+    private func getChildViewWidth(_ from: UIView) -> CGFloat {
+        var width = from.frame.width
+        if width == 0 {
             switch from.width {
             case .fill:
                 if let value = from.superview {
-                    size.width = value.frame.size.width - from.margin * 2 - from.marginLeft - from.marginRight
-                    if value is RelativeLayoutView {
-                        size.width = getViewSize(value).width - from.margin * 2 - from.marginLeft - from.marginRight
+                    width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
+                    if value is LinearLayoutView || value is RelativeLayoutView {
+                        width = getChildViewWidth(value) - from.margin * 2 - from.marginLeft - from.marginRight
                     }
                 }
             case .px(let value):
-                size.width = value
+                width = value
             case .wrap:
-                break
+                width = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginLeft }.max() ?? 0
             }
         }
-        if size.height == 0 {
+        return width
+    }
+    
+    private func getChildViewHeight(_ from: UIView) -> CGFloat {
+        var height = from.frame.height
+        if height == 0 {
             switch from.height {
             case .fill:
-                if from.frame.height == 0, let value = from.superview {
-                    size.height = value.frame.size.height - from.margin * 2 - from.marginTop - from.marginBottom
-                    if value is RelativeLayoutView {
-                        size.height = getViewSize(value).height - from.margin * 2 - from.marginTop - from.marginBottom
+                if let value = from.superview {
+                    height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
+                    if value is LinearLayoutView || value is RelativeLayoutView {
+                        height = getChildViewHeight(value) - from.margin * 2 - from.marginTop - from.marginBottom
                     }
                 }
             case .px(let value):
-                size.height = value
+                height = value
             case .wrap:
-                break
+                height = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginBottom }.max() ?? 0
             }
         }
-        return size
+        return height
     }
 }

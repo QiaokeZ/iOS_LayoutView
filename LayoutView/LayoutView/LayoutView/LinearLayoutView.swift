@@ -78,7 +78,7 @@ extension LinearLayoutView {
     }
 
     private func setLayoutViewFrame(_ from: LinearLayoutView) {
-        from.frame.size =  CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
+        from.frame.size = CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
         if from.frame.origin == .zero {
             from.frame.origin = CGPoint(x: from.margin + from.marginLeft, y: from.margin + from.marginTop)
         }
@@ -191,7 +191,6 @@ extension LinearLayoutView {
                 if let child = from as? LinearLayoutView {
                     width = getLayoutWrapViewSize(child).width
                 }
-                break
             }
         }
         return width
@@ -224,7 +223,6 @@ extension LinearLayoutView {
                 if let child = from as? LinearLayoutView {
                     height = getLayoutWrapViewSize(child).height
                 }
-                break
             }
         }
         return height
