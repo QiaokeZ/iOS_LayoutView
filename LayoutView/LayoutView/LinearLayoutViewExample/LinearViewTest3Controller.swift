@@ -32,13 +32,15 @@ extension LinearViewTest3Controller {
         linearView1.margin = 10
         rootView.addSubview(linearView1)
   
-        for _ in 0..<3{
-            let button = UIButton()
-            button.height = .fill
-            button.margin = 10
-            button.weight = 1
-            button.backgroundColor = UIColor.random
-            linearView1.addSubview(button)
+        for i in 0..<3{
+            let label = UILabel()
+            label.height = .fill
+            label.margin = 5
+            label.weight = 1
+            label.text = "label\(i)"
+            label.textAlignment = .center
+            label.backgroundColor = UIColor.random
+            linearView1.addSubview(label)
         }
         
         let linearView2 = LinearLayoutView(direction: .vertical,  width: .fill, height: .fill)
@@ -47,13 +49,15 @@ extension LinearViewTest3Controller {
         linearView2.weight = 1
         rootView.addSubview(linearView2)
         
-        for _ in 0..<3{
-            let button = UIButton()
-            button.width = .fill
-            button.margin = 10
-            button.weight = 1
-            button.backgroundColor = UIColor.random
-            linearView2.addSubview(button)
+        for i in 0..<3{
+            let label = UILabel()
+            label.width = .fill
+            label.margin = 5
+            label.weight = 1
+            label.text = "label\(i)"
+            label.textAlignment = .center
+            label.backgroundColor = UIColor.random
+            linearView2.addSubview(label)
         }
     }
 }
