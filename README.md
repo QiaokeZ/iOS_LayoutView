@@ -56,7 +56,7 @@ label4.textAlignment = .center
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
 ```
-<img src="/Users/admin/Desktop/WechatIMG2.png" width="30%" height="50%"/>
+<img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0acm5bdljj30n01dsdiu.jpg" width="30%" height="50%"/>
 
 ```swift
 let rootView = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
@@ -111,5 +111,5 @@ label4.textAlignment = .center
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
 ```
-<img src="/Users/admin/Desktop/WechatIMG3.png" width="30%" height="50%"/>
+<img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0acmpwzx5j30n01ds41w.jpg" width="30%" height="50%"/>
 
