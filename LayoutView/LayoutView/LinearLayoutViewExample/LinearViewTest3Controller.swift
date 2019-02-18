@@ -16,18 +16,6 @@ class LinearViewTest3Controller: UIViewController {
         view.backgroundColor = UIColor.white
         parpareView()
     }
-    
-    override var prefersStatusBarHidden: Bool{
-        return false
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation{
-        return .none
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return .lightContent
-    }
 }
 
 extension LinearViewTest3Controller {
@@ -35,7 +23,6 @@ extension LinearViewTest3Controller {
     private func parpareView() {
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
-//        rootView.isAutorotateEnabled = true
         rootView.margin = 10
         view.addSubview(rootView)
         
@@ -69,5 +56,4 @@ extension LinearViewTest3Controller {
             linearView2.addSubview(button)
         }
     }
-
 }

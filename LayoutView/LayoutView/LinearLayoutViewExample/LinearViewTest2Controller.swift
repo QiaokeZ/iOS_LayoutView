@@ -1,10 +1,3 @@
-//
-//  LinearViewTest2Controller.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/18.
-//  Copyright © 2019 zhouqiao. All rights reserved.
-//
 
 import UIKit
 
@@ -16,65 +9,61 @@ class LinearViewTest2Controller: UIViewController {
         view.backgroundColor = UIColor.white
         parpareView()
     }
-    
-    override var prefersStatusBarHidden: Bool{
-        return false
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation{
-        return .none
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return .lightContent
-    }
 }
 
 extension LinearViewTest2Controller {
     
     private func parpareView() {
-        let rootView = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
-        rootView.backgroundColor = UIColor.gray
-        rootView.margin = 10
-        view.addSubview(rootView)
-        
-        let linearView1 = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
-        linearView1.backgroundColor = UIColor.random
-        linearView1.margin = 10
-        linearView1.weight = 1
-        rootView.addSubview(linearView1)
-        
-        for _ in 0..<3{
-            let button = UIButton()
-            button.height = .fill
-            button.width = .fill
-            button.margin = 10
-            button.weight = 1
-            button.backgroundColor = UIColor.random
-            linearView1.addSubview(button)
-        }
-        
-        let button1 = UIButton()
-        button1.height = .px(50)
-        button1.width = .px(50)
-        button1.margin = 10
-        button1.backgroundColor = UIColor.random
-        rootView.addSubview(button1)
-//
-        let button2 = UIButton()
-        button2.height = .px(50)
-        button2.width = .px(50)
-        button2.margin = 10
-        button2.gravity = .center
-        button2.backgroundColor = UIColor.random
-        rootView.addSubview(button2)
-//
-        let button3 = UIButton()
-        button3.height = .px(50)
-        button3.width = .px(50)
-        button3.margin = 10
-        button3.gravity = .bottom
-        button3.backgroundColor = UIColor.random
-        rootView.addSubview(button3)
+    let rootView = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
+    rootView.backgroundColor = UIColor.gray
+    rootView.margin = 10
+    view.addSubview(rootView)
+    
+    let label0 = UILabel()
+    label0.height = .fill
+    label0.margin = 5
+    label0.weight = 1
+    label0.textAlignment = .center
+    label0.text = "label\(0)"
+    label0.backgroundColor = UIColor.random
+    rootView.addSubview(label0)
+    
+    let label1 = UILabel()
+    label1.height = .fill
+    label1.margin = 5
+    label1.weight = 1
+    label1.textAlignment = .center
+    label1.text = "label\(1)"
+    label1.backgroundColor = UIColor.random
+    rootView.addSubview(label1)
+    
+    let label2 = UILabel()
+    label2.width = .px(50)
+    label2.margin = 5
+    label2.text = "label\(2)"
+    label2.height = .px(50)
+    label2.textAlignment = .center
+    label2.backgroundColor = UIColor.random
+    rootView.addSubview(label2)
+    
+    let label3 = UILabel()
+    label3.width = .px(50)
+    label3.margin = 5
+    label3.text = "label\(3)"
+    label3.gravity = .center
+    label3.height = .px(50)
+    label3.textAlignment = .center
+    label3.backgroundColor = UIColor.random
+    rootView.addSubview(label3)
+    
+    let label4 = UILabel()
+    label4.width = .px(50)
+    label4.margin = 5
+    label4.text = "label\(4)"
+    label4.height = .px(50)
+    label4.gravity = .bottom
+    label4.textAlignment = .center
+    label4.backgroundColor = UIColor.random
+    rootView.addSubview(label4)
     }
 }

@@ -1,13 +1,6 @@
-//
-//  LinearViewTest1Controller.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/18.
-//  Copyright © 2019 zhouqiao. All rights reserved.
-//
+
 
 import UIKit
-import WebKit
 
 class LinearViewTest1Controller: UIViewController {
 
@@ -17,61 +10,62 @@ class LinearViewTest1Controller: UIViewController {
         view.backgroundColor = UIColor.white
         parpareView()
     }
-
-    override var prefersStatusBarHidden: Bool {
-        return false
-    }
-
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .none
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 }
 
 extension LinearViewTest1Controller {
-    
+
     private func parpareView() {
+        
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.margin = 10
         view.addSubview(rootView)
 
-        for _ in 0..<2{
-            let label = UILabel()
-            label.width = .fill
-            label.margin = 10
-            label.weight = 1
-            label.backgroundColor = UIColor.random
-            rootView.addSubview(label)
-        }
+        let label0 = UILabel()
+        label0.width = .fill
+        label0.margin = 5
+        label0.weight = 1
+        label0.textAlignment = .center
+        label0.text = "label\(0)"
+        label0.backgroundColor = UIColor.random
+        rootView.addSubview(label0)
+        
+        let label1 = UILabel()
+        label1.width = .fill
+        label1.margin = 5
+        label1.weight = 1
+        label1.textAlignment = .center
+        label1.text = "label\(1)"
+        label1.backgroundColor = UIColor.random
+        rootView.addSubview(label1)
 
-        let linearView = LinearLayoutView(direction: .vertical, width: .fill, height: .wrap)
-        linearView.backgroundColor = UIColor.random
-        linearView.margin = 10
-        rootView.addSubview(linearView)
+        let label2 = UILabel()
+        label2.width = .px(100)
+        label2.margin = 5
+        label2.text = "label\(2)"
+        label2.height = .px(100)
+        label2.textAlignment = .center
+        label2.backgroundColor = UIColor.random
+        rootView.addSubview(label2)
 
-        let linearView1 = LinearLayoutView(direction: .vertical, width: .fill, height: .wrap)
-        linearView1.backgroundColor = UIColor.random
-        linearView1.margin = 10
-        linearView.addSubview(linearView1)
+        let label3 = UILabel()
+        label3.width = .px(100)
+        label3.margin = 5
+        label3.text = "label\(3)"
+        label3.gravity = .center
+        label3.height = .px(100)
+        label3.textAlignment = .center
+        label3.backgroundColor = UIColor.random
+        rootView.addSubview(label3)
 
-        for _ in 0..<2{
-            let label = UILabel()
-            label.width = .fill
-            label.height = .px(30)
-            label.margin = 10
-            label.backgroundColor = UIColor.random
-            linearView1.addSubview(label)
-        }
-
-        let label = UILabel()
-        label.width = .fill
-        label.margin = 10
-        label.weight = 1
-        label.backgroundColor = UIColor.random
-        rootView.addSubview(label)
+        let label4 = UILabel()
+        label4.width = .px(100)
+        label4.margin = 5
+        label4.text = "label\(4)"
+        label4.height = .px(100)
+        label4.gravity = .right
+        label4.textAlignment = .center
+        label4.backgroundColor = UIColor.random
+        rootView.addSubview(label4)
     }
 }
