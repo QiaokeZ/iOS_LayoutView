@@ -1,10 +1,4 @@
-//
-//  LinearViewTest4Controller.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/22.
-//  Copyright © 2019 zhouqiao. All rights reserved.
-//
+
 
 import UIKit
 
@@ -35,7 +29,6 @@ extension LinearViewTest4Controller {
     private func parpareView() {
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
-//        rootView.isAutorotateEnabled = true
         rootView.marginTop = 10
         rootView.marginLeft = 5
         rootView.marginBottom = 10

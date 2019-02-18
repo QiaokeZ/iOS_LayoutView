@@ -1,10 +1,3 @@
-//
-//  LinearLayoutViewController.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/18.
-//  Copyright © 2019 zhouqiao. All rights reserved.
-//
 
 import UIKit
 

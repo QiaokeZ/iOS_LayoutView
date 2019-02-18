@@ -1,10 +1,4 @@
-//
-//  LinearViewTest3Controller.swift
-//  iOS_Swift_LayoutExample
-//
-//  Created by admin on 2019/1/20.
-//  Copyright © 2019年 zhouqiao. All rights reserved.
-//
+
 
 import UIKit
 
