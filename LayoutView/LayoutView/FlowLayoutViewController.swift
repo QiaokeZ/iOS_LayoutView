@@ -1,13 +1,13 @@
 
 import UIKit
 
-class LinearLayoutViewController: UIViewController {
+class FlowLayoutViewController: UIViewController {
 
-    let items = ["vertical", "horizontal", "vertical+horizontal", "多层嵌套"]
+    let items = ["vertical", "horizontal"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "LinearLayoutView"
+        title = "FlowLayoutView"
         
         let tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
@@ -18,7 +18,7 @@ class LinearLayoutViewController: UIViewController {
     }
 }
 
-extension LinearLayoutViewController:UITableViewDataSource,UITableViewDelegate{
+extension FlowLayoutViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
@@ -33,19 +33,11 @@ extension LinearLayoutViewController:UITableViewDataSource,UITableViewDelegate{
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            let vc = LinearViewTest1Controller()
+            let vc = FlowViewTest1Controller()
             vc.title = items[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         case 1:
-            let vc = LinearViewTest2Controller()
-            vc.title = items[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
-        case 2:
-            let vc = LinearViewTest3Controller()
-            vc.title = items[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
-        case 3:
-            let vc = LinearViewTest4Controller()
+            let vc = FlowViewTest2Controller()
             vc.title = items[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         default:

@@ -17,13 +17,13 @@ extension LinearViewTest3Controller {
     private func parpareView() {
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
-        rootView.margin = 10
+        rootView.margin = 5
         view.addSubview(rootView)
         
         let linearView1 = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
         linearView1.backgroundColor = UIColor.random
         linearView1.weight = 1
-        linearView1.margin = 10
+        linearView1.margin = 5
         rootView.addSubview(linearView1)
   
         for i in 0..<3{
@@ -39,7 +39,7 @@ extension LinearViewTest3Controller {
         
         let linearView2 = LinearLayoutView(direction: .vertical,  width: .fill, height: .fill)
         linearView2.backgroundColor = UIColor.random
-        linearView2.margin = 10
+        linearView2.margin = 5
         linearView2.weight = 1
         rootView.addSubview(linearView2)
         

@@ -27,40 +27,31 @@ class RelativeLayoutView: UIView {
         self.height = height
     }
 
-    override func willMove(toWindow newWindow: UIWindow?) {
-        super.didMoveToWindow()
-        if frame == .zero {
-            layoutRelativeView(self)
-        }
-    }
-
-    override func layoutIfNeeded() {
-        layoutRelativeView(self)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setChildViewSize()
+        setChildViewOrigin()
+        setLayoutViewFrame()
     }
 }
 
 extension RelativeLayoutView {
 
-    private func layoutRelativeView(_ from: RelativeLayoutView) {
-        setChildViewSize(from)
-        setChildViewOrigin(from)
-        setLayoutViewFrame(from)
-    }
-
-    private func setChildViewSize(_ from: RelativeLayoutView) {
-        for view in from.subviews {
+    private func setChildViewSize() {
+        for view in subviews {
             view.frame = .zero
-            if view is LinearLayoutView || view is RelativeLayoutView {
+            if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
+                view.setNeedsLayout()
                 view.layoutIfNeeded()
             } else {
-                view.frame.size = CGSize(width: getChildViewWidth(view), height: getChildViewHeight(view))
+                view.frame.size = CGSize(width: getViewWidth(view), height: getViewHeight(view))
             }
         }
     }
 
-    private func setChildViewOrigin(_ from: RelativeLayoutView) {
-        let parentSize = CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
-        for view in from.subviews {
+    private func setChildViewOrigin() {
+        let parentSize = CGSize(width: getViewWidth(self), height: getViewHeight(self))
+        for view in subviews {
             view.frame.origin = CGPoint(x: view.margin + view.marginLeft, y: view.margin + view.marginTop)
             if let toTopView = view.toTopOf {
                 view.frame.origin.y = toTopView.frame.origin.y - toTopView.margin - toTopView.marginTop - (view.frame.height + view.margin + view.marginBottom)
@@ -110,50 +101,45 @@ extension RelativeLayoutView {
         }
     }
 
-    private func setLayoutViewFrame(_ from: RelativeLayoutView) {
-        from.frame.size = CGSize(width: getChildViewWidth(from), height: getChildViewHeight(from))
-        if from.frame.origin == .zero {
-            from.frame.origin = CGPoint(x: from.margin + from.marginLeft, y: from.margin + from.marginTop)
+    private func setLayoutViewFrame() {
+        if frame == .zero {
+            frame.size = CGSize(width: getViewWidth(self), height: getViewHeight(self))
+            frame.origin = CGPoint(x: margin + marginLeft, y: margin + marginTop)
         }
     }
-    
-    
-    private func getChildViewWidth(_ from: UIView) -> CGFloat {
+
+    private func getViewWidth(_ from: UIView) -> CGFloat {
         var width = from.frame.width
-        if width == 0 {
-            switch from.width {
-            case .fill:
-                if let value = from.superview {
-                    width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
-                    if value is LinearLayoutView || value is RelativeLayoutView {
-                        width = getChildViewWidth(value) - from.margin * 2 - from.marginLeft - from.marginRight
-                    }
+        switch from.width {
+        case .fill:
+            if let value = from.superview, width == 0 {
+                width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
+                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                    width = getViewWidth(value) - from.margin * 2 - from.marginLeft - from.marginRight
                 }
-            case .px(let value):
-                width = value
-            case .wrap:
-                width = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginLeft }.max() ?? 0
             }
+        case .px(let value):
+            width = value
+        case .wrap:
+            width = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginLeft }.max() ?? 0
         }
         return width
     }
-    
-    private func getChildViewHeight(_ from: UIView) -> CGFloat {
+
+    private func getViewHeight(_ from: UIView) -> CGFloat {
         var height = from.frame.height
-        if height == 0 {
-            switch from.height {
-            case .fill:
-                if let value = from.superview {
-                    height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
-                    if value is LinearLayoutView || value is RelativeLayoutView {
-                        height = getChildViewHeight(value) - from.margin * 2 - from.marginTop - from.marginBottom
-                    }
+        switch from.height {
+        case .fill:
+            if let value = from.superview, height == 0 {
+                height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
+                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                    height = getViewHeight(value) - from.margin * 2 - from.marginTop - from.marginBottom
                 }
-            case .px(let value):
-                height = value
-            case .wrap:
-                height = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginBottom }.max() ?? 0
             }
+        case .px(let value):
+            height = value
+        case .wrap:
+            height = from.subviews.map { $0.frame.maxX + $0.margin + $0.marginBottom }.max() ?? 0
         }
         return height
     }

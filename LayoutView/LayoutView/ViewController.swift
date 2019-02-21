@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let items = ["LinearLayoutView", "RelativeLayoutView"]
+    let items = ["LinearLayoutView", "RelativeLayoutView", "FlowLayoutView"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(LinearLayoutViewController(), animated: true)
         case 1:
             navigationController?.pushViewController(RelativeLayoutViewController(), animated: true)
+        case 2:
+            navigationController?.pushViewController(FlowLayoutViewController(), animated: true)
         default:
             break
         }

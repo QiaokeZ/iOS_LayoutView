@@ -11,6 +11,11 @@
 
 import UIKit
 
+enum LayoutDirection: Int {
+    case vertical
+    case horizontal
+}
+
 enum LayoutSize {
     case fill
     case wrap
@@ -86,7 +91,7 @@ extension UIView {
             return 0
         }
     }
-
+    
     var marginRight: CGFloat {
         set {
             objc_setAssociatedObject(self, AssociatedKeys.marginRightKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
