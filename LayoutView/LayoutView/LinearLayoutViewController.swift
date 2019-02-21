@@ -3,7 +3,7 @@ import UIKit
 
 class LinearLayoutViewController: UIViewController {
 
-    let items = ["vertical", "horizontal", "vertical+horizontal", "多层嵌套"]
+    let items = ["上下布局", "左右布局", "混合布局", "多层嵌套布局"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

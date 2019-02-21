@@ -21,7 +21,7 @@ extension FlowViewTest2Controller{
         rootView.backgroundColor = UIColor.random
         view.addSubview(rootView)
 
-        for i in 0..<40{
+        for i in 0..<33{
             let label = UILabel()
             label.marginLeft = 5
             label.marginTop = 5

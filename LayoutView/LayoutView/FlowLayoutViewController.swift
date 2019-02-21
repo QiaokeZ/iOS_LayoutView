@@ -3,7 +3,7 @@ import UIKit
 
 class FlowLayoutViewController: UIViewController {
 
-    let items = ["vertical", "horizontal"]
+    let items = ["上下布局", "左右布局"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

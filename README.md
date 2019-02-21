@@ -4,6 +4,7 @@
 ### LinearLayoutView 使用
 
 ```swift
+<!--上下布局-->
 let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
 rootView.backgroundColor = UIColor.gray
 rootView.margin = 10
@@ -59,6 +60,7 @@ rootView.addSubview(label4)
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0acm5bdljj30n01dsdiu.jpg" width="30%" height="50%"/>
 
 ```swift
+<!--左右布局-->
 let rootView = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
 rootView.backgroundColor = UIColor.gray
 rootView.margin = 10
@@ -114,6 +116,7 @@ rootView.addSubview(label4)
 <img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0acmpwzx5j30n01ds41w.jpg" width="30%" height="50%"/>
 
 ```swift
+<!--混合布局-->
 let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
 rootView.backgroundColor = UIColor.gray
 rootView.margin = 10
@@ -154,6 +157,65 @@ for i in 0..<3{
 }
 ```
 <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0acsoiruwj30n01dsgpj.jpg" width="30%" height="50%"/>
+
+```swift
+<!--多层嵌套布局-->
+let rootView = LinearLayoutView(direction: .vertical, gravity: .center, width: .fill, height: .fill)
+rootView.backgroundColor = UIColor.gray
+rootView.marginTop = 10
+rootView.marginLeft = 5
+rootView.marginBottom = 10
+rootView.marginRight = 5
+view.addSubview(rootView)
+
+let linearView2 = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
+linearView2.backgroundColor = UIColor.random
+linearView2.weight = 1
+linearView2.margin = 5
+rootView.addSubview(linearView2)
+
+let linearView3 = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
+linearView3.backgroundColor = UIColor.random
+linearView3.weight = 1
+linearView3.margin = 5
+linearView2.addSubview(linearView3)
+
+let linearView4 = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
+linearView4.backgroundColor = UIColor.random
+linearView4.weight = 2
+linearView4.margin = 5
+linearView3.addSubview(linearView4)
+
+for i in 0..<3{
+    let label = UILabel()
+    label.height = .fill
+    label.margin = 5
+    label.weight = 1
+    label.text = "label\(i)"
+    label.textAlignment = .center
+    label.backgroundColor = UIColor.random
+    linearView4.addSubview(label)
+}
+
+let linearView5 = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
+linearView5.backgroundColor = UIColor.random
+linearView5.weight = 1
+linearView5.margin = 5
+linearView3.addSubview(linearView5)
+
+for i in 0..<3{
+    let label = UILabel()
+    label.width = .fill
+    label.margin = 5
+    label.weight = 1
+    label.text = "label\(i)"
+    label.textAlignment = .center
+    label.backgroundColor = UIColor.random
+    linearView5.addSubview(label)
+}
+```
+<img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0e35xr46wj30n01ds424.jpg" width="30%" height="50%"/>
+
 
 ### RelativeLayoutView 使用
 ```swift
