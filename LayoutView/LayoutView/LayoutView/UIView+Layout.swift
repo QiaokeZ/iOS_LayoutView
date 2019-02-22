@@ -42,14 +42,14 @@ struct LayoutAlignParent: OptionSet {
     static let right = LayoutAlignParent(rawValue: 1 << 3)
 }
 
-extension UIView {
+extension LayoutView where Base: UIView {
 
     var height: LayoutSize {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.heightKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &heightKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.heightKey!) as? LayoutSize {
+            if let value = objc_getAssociatedObject(base, &heightKey) as? LayoutSize {
                 return value
             }
             return LayoutSize.px(0)
@@ -58,10 +58,10 @@ extension UIView {
 
     var width: LayoutSize {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.widthKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &widthKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.widthKey!) as? LayoutSize {
+            if let value = objc_getAssociatedObject(base, &widthKey) as? LayoutSize {
                 return value
             }
             return LayoutSize.px(0)
@@ -70,10 +70,10 @@ extension UIView {
 
     var gravity: LayoutGravity {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.gravityKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &gravityKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.gravityKey!) as? LayoutGravity {
+            if let value = objc_getAssociatedObject(base, &gravityKey) as? LayoutGravity {
                 return value
             }
             return .none
@@ -82,22 +82,22 @@ extension UIView {
 
     var weight: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.weightKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &weightKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.weightKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &weightKey) as? CGFloat {
                 return value
             }
             return 0
         }
     }
-    
+
     var marginRight: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.marginRightKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &marginRightKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.marginRightKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &marginRightKey) as? CGFloat {
                 return value
             }
             return 0
@@ -106,10 +106,10 @@ extension UIView {
 
     var marginBottom: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.marginBottomKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &marginBottomKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.marginBottomKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &marginBottomKey) as? CGFloat {
                 return value
             }
             return 0
@@ -118,10 +118,10 @@ extension UIView {
 
     var marginLeft: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.marginLeftKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &marginLeftKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.marginLeftKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &marginLeftKey) as? CGFloat {
                 return value
             }
             return 0
@@ -130,10 +130,10 @@ extension UIView {
 
     var marginTop: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.marginTopKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &marginTopKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.marginTopKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &marginTopKey) as? CGFloat {
                 return value
             }
             return 0
@@ -142,10 +142,10 @@ extension UIView {
 
     var margin: CGFloat {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.marginKey!, newValue, .OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(base, &marginKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.marginKey!) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &marginKey) as? CGFloat {
                 return value
             }
             return 0
@@ -154,10 +154,10 @@ extension UIView {
 
     var alignParent: LayoutAlignParent {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.alignParentKey!, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(base, &alignParentKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
         get {
-            if let value = objc_getAssociatedObject(self, AssociatedKeys.alignParentKey!) as? LayoutAlignParent {
+            if let value = objc_getAssociatedObject(base, &alignParentKey) as? LayoutAlignParent {
                 return value
             }
             return [.none]
@@ -166,94 +166,92 @@ extension UIView {
 
     var alignBottom: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.alignBottomKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &alignBottomKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.alignBottomKey!) as? UIView
+            return objc_getAssociatedObject(base, &alignBottomKey) as? UIView
         }
     }
 
     var alignTop: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.alignTopKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &alignTopKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.alignTopKey!) as? UIView
+            return objc_getAssociatedObject(base, &alignTopKey) as? UIView
         }
     }
 
     var alignRight: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.alignRightKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &alignRightKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.alignRightKey!) as? UIView
+            return objc_getAssociatedObject(base, &alignRightKey) as? UIView
         }
     }
 
     var alignLeft: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.alignLeftKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &alignLeftKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.alignLeftKey!) as? UIView
+            return objc_getAssociatedObject(base, &alignLeftKey) as? UIView
         }
     }
 
     var toRightOf: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.toRightOfKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &toRightOfKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.toRightOfKey!) as? UIView
+            return objc_getAssociatedObject(base, &toRightOfKey) as? UIView
         }
     }
 
     var toLeftOf: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.toLeftOfKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &toLeftOfKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.toLeftOfKey!) as? UIView
+            return objc_getAssociatedObject(base, &toLeftOfKey) as? UIView
         }
     }
 
     var toBottomOf: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.toBottomOfKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &toBottomOfKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.toBottomOfKey!) as? UIView
+            return objc_getAssociatedObject(base, &toBottomOfKey) as? UIView
         }
     }
 
     var toTopOf: UIView? {
         set {
-            objc_setAssociatedObject(self, AssociatedKeys.toTopOfKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &toTopOfKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            return objc_getAssociatedObject(self, AssociatedKeys.toTopOfKey!) as? UIView
+            return objc_getAssociatedObject(base, &toTopOfKey) as? UIView
         }
     }
 }
 
-private struct AssociatedKeys {
-    static let marginKey = UnsafeRawPointer(bitPattern: "marginKey".hashValue)
-    static let marginTopKey = UnsafeRawPointer(bitPattern: "marginTopKey".hashValue)
-    static let marginLeftKey = UnsafeRawPointer(bitPattern: "marginLeftKey".hashValue)
-    static let marginBottomKey = UnsafeRawPointer(bitPattern: "marginBottomKey".hashValue)
-    static let marginRightKey = UnsafeRawPointer(bitPattern: "marginRightKey".hashValue)
-    static let weightKey = UnsafeRawPointer(bitPattern: "weightKey".hashValue)
-    static let gravityKey = UnsafeRawPointer(bitPattern: "gravityKey".hashValue)
-    static let heightKey = UnsafeRawPointer(bitPattern: "heightKey".hashValue)
-    static let widthKey = UnsafeRawPointer(bitPattern: "widthKey".hashValue)
-    static let toTopOfKey = UnsafeRawPointer(bitPattern: "toTopOfKey".hashValue)
-    static let toBottomOfKey = UnsafeRawPointer(bitPattern: "toBottomOfKey".hashValue)
-    static let toLeftOfKey = UnsafeRawPointer(bitPattern: "toLeftOfKey".hashValue)
-    static let toRightOfKey = UnsafeRawPointer(bitPattern: "toRightOfKey".hashValue)
-    static let alignTopKey = UnsafeRawPointer(bitPattern: "alignTopKey".hashValue)
-    static let alignLeftKey = UnsafeRawPointer(bitPattern: "alignLeftKey".hashValue)
-    static let alignBottomKey = UnsafeRawPointer(bitPattern: "alignBottomKey".hashValue)
-    static let alignRightKey = UnsafeRawPointer(bitPattern: "alignRightKey".hashValue)
-    static let alignParentKey = UnsafeRawPointer(bitPattern: "alignParentKey".hashValue)
-}
+private var marginKey: Void?
+private var marginTopKey: Void?
+private var marginLeftKey: Void?
+private var marginBottomKey: Void?
+private var marginRightKey: Void?
+private var weightKey: Void?
+private var gravityKey: Void?
+private var heightKey: Void?
+private var widthKey: Void?
+private var toTopOfKey: Void?
+private var toBottomOfKey: Void?
+private var toLeftOfKey: Void?
+private var toRightOfKey: Void?
+private var alignTopKey: Void?
+private var alignLeftKey: Void?
+private var alignBottomKey: Void?
+private var alignRightKey: Void?
+private var alignParentKey: Void?

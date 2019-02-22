@@ -16,20 +16,20 @@ extension RelativeViewTest6Controller {
     private func parpareView() {
         let rootView = RelativeLayoutView(width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.random
-        rootView.margin = 10
+        rootView.lv.margin = 10
         view.addSubview(rootView)
         
         let linearView1 = LinearLayoutView(direction: .horizontal, width: .fill, height: .wrap)
         linearView1.backgroundColor = UIColor.random
-        linearView1.margin = 10
-        linearView1.gravity = .center
+        linearView1.lv.margin = 10
+        linearView1.lv.gravity = .center
         
         for _ in 0..<3{
             let button = UIButton()
-            button.height = .px(300)
-            button.width = .fill
-            button.weight = 1
-            button.margin = 10
+            button.lv.height = .px(300)
+            button.lv.width = .fill
+            button.lv.weight = 1
+            button.lv.margin = 10
             button.backgroundColor = UIColor.random
             linearView1.addSubview(button)
         }

@@ -26,9 +26,9 @@ class LinearLayoutView: UIView {
     init(direction: LayoutDirection = .horizontal, gravity: LayoutGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.direction = direction
-        self.gravity = gravity
-        self.width = width
-        self.height = height
+        self.lv.gravity = gravity
+        self.lv.width = width
+        self.lv.height = height
     }
 
     override func layoutSubviews() {
@@ -45,24 +45,24 @@ extension LinearLayoutView {
         let parentSize = CGSize(width: getViewWidth(self), height: getViewHeight(self))
         let totalWeight = subviews.reduce(CGFloat(0)) { (value, view) in
             view.frame = .zero
-            return value + view.weight
+            return value + view.lv.weight
         }
         let surplusSize = subviews.reduce(CGSize.zero) { (value, view) in
-            if view.weight > 0 {
-                return CGSize(width: value.width + (view.margin * 2 + view.marginLeft + view.marginRight),
-                    height: value.height + (view.margin * 2 + view.marginTop + view.marginBottom))
+            if view.lv.weight > 0 {
+                return CGSize(width: value.width + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
+                    height: value.height + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
             } else {
-                return CGSize(width: value.width + getViewWidth(view) + (view.margin * 2 + view.marginLeft + view.marginRight),
-                    height: value.height + getViewHeight(view) + (view.margin * 2 + view.marginTop + view.marginBottom))
+                return CGSize(width: value.width + getViewWidth(view) + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
+                    height: value.height + getViewHeight(view) + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
             }
         }
         for view in subviews {
             view.frame.size = CGSize(width: getViewWidth(view), height: getViewHeight(view))
-            if view.weight > 0 {
+            if view.lv.weight > 0 {
                 if direction == .horizontal {
-                    view.frame.size.width = max((view.weight * (parentSize.width - surplusSize.width) / totalWeight), 0)
+                    view.frame.size.width = max((view.lv.weight * (parentSize.width - surplusSize.width) / totalWeight), 0)
                 } else {
-                    view.frame.size.height = max((view.weight * (parentSize.height - surplusSize.height) / totalWeight), 0)
+                    view.frame.size.height = max((view.lv.weight * (parentSize.height - surplusSize.height) / totalWeight), 0)
                 }
             }
         }
@@ -71,7 +71,7 @@ extension LinearLayoutView {
     private func setLayoutViewFrame() {
         if frame == .zero {
             frame.size = CGSize(width: getViewWidth(self), height: getViewHeight(self))
-            frame.origin = CGPoint(x: margin + marginLeft, y: margin + marginTop)
+            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
         }
     }
 
@@ -80,28 +80,28 @@ extension LinearLayoutView {
         for view in subviews {
             var size = CGSize.zero
             if let value = lastView {
-                size = CGSize(width: value.frame.maxX + value.margin + value.marginRight, height: value.frame.maxY + value.margin + value.marginBottom)
+                size = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
             }
             if direction == .horizontal {
-                view.frame.origin = CGPoint(x: view.margin + view.marginLeft + size.width, y: view.margin + view.marginTop)
-                if view.gravity == .center {
+                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft + size.width, y: view.lv.margin + view.lv.marginTop)
+                if view.lv.gravity == .center {
                     if frame.height > view.frame.height {
                         view.frame.origin.y = (frame.height - view.frame.height) / 2
                     }
-                } else if view.gravity == .bottom {
-                    if frame.height > view.frame.height + view.margin + view.marginBottom {
-                        view.frame.origin.y = frame.height - view.frame.height - view.margin - view.marginBottom
+                } else if view.lv.gravity == .bottom {
+                    if frame.height > view.frame.height + view.lv.margin + view.lv.marginBottom {
+                        view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                     }
                 }
             } else {
-                view.frame.origin = CGPoint(x: view.margin + view.marginLeft, y: view.margin + view.marginTop + size.height)
-                if view.gravity == .center {
+                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop + size.height)
+                if view.lv.gravity == .center {
                     if frame.width > view.frame.width {
                         view.frame.origin.x = (frame.width - view.frame.width) / 2
                     }
-                } else if view.gravity == .right {
-                    if frame.width > view.frame.width + view.margin + view.marginRight {
-                        view.frame.origin.x = frame.width - view.frame.width - view.margin - view.marginRight
+                } else if view.lv.gravity == .right {
+                    if frame.width > view.frame.width + view.lv.margin + view.lv.marginRight {
+                        view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                     }
                 }
             }
@@ -110,8 +110,8 @@ extension LinearLayoutView {
         let childTotalSize = getViewChildTotalSize(self)
         for view in subviews {
             if direction == .horizontal {
-                let match = view.gravity != .top && view.gravity != .center && view.gravity != .bottom
-                switch gravity {
+                let match = view.lv.gravity != .top && view.lv.gravity != .center && view.lv.gravity != .bottom
+                switch lv.gravity {
                 case .center:
                     if match {
                         view.frame.origin.y = (frame.height - view.frame.height) / 2
@@ -125,14 +125,14 @@ extension LinearLayoutView {
                     }
                 case .bottom:
                     if match {
-                        view.frame.origin.y = frame.height - view.frame.height - view.margin - view.marginBottom
+                        view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                     }
                 default:
                     break
                 }
             } else {
-                let match = view.gravity != .left && view.gravity != .center && view.gravity != .right
-                switch gravity {
+                let match = view.lv.gravity != .left && view.lv.gravity != .center && view.lv.gravity != .right
+                switch lv.gravity {
                 case .center:
                     if match {
                         view.frame.origin.x = (frame.width - view.frame.width) / 2
@@ -146,7 +146,7 @@ extension LinearLayoutView {
                     }
                 case .right:
                     if match {
-                        view.frame.origin.x = frame.width - view.frame.width - view.margin - view.marginRight
+                        view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                     }
                 default:
                     break
@@ -157,19 +157,19 @@ extension LinearLayoutView {
 
     private func getViewWidth(_ from: UIView) -> CGFloat {
         var width = from.frame.width
-        switch from.width {
+        switch from.lv.width {
         case .fill:
             if let value = from.superview, width == 0 {
-                width = value.frame.width - from.margin * 2 - from.marginLeft - from.marginRight
+                width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                 if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    width = getViewWidth(value) - from.margin * 2 - from.marginLeft - from.marginRight
+                    width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     if let child = value as? LinearLayoutView {
                         if child.direction == .horizontal {
                             for view in child.subviews {
                                 if view == from {
                                     break
                                 }
-                                width -= view.frame.width + view.margin * 2 + view.marginLeft + view.marginRight
+                                width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                             }
                         }
                     }
@@ -187,19 +187,19 @@ extension LinearLayoutView {
 
     private func getViewHeight(_ from: UIView) -> CGFloat {
         var height = from.frame.height
-        switch from.height {
+        switch from.lv.height {
         case .fill:
             if let value = from.superview, height == 0 {
-                height = value.frame.height - from.margin * 2 - from.marginTop - from.marginBottom
+                height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                 if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    height = getViewHeight(value) - from.margin * 2 - from.marginTop - from.marginBottom
+                    height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     if let child = value as? LinearLayoutView {
                         if child.direction == .vertical {
                             for view in child.subviews {
                                 if view == from {
                                     break
                                 }
-                                height -= view.frame.height + view.margin * 2 + view.marginTop + view.marginBottom
+                                height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                             }
                         }
                     }
@@ -219,14 +219,14 @@ extension LinearLayoutView {
         var size = CGSize.zero
         for view in from.subviews {
             if from.direction == .horizontal {
-                size.width += getViewWidth(view) + view.margin * 2 + view.marginLeft + view.marginRight
-                let height = getViewHeight(view) + view.margin * 2 + view.marginTop + view.marginBottom
+                size.width += getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+                let height = getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                 if height > size.height {
                     size.height = height
                 }
             } else {
-                size.height += getViewHeight(view) + view.margin * 2 + view.marginTop + view.marginBottom
-                let width = getViewWidth(view) + view.margin * 2 + view.marginLeft + view.marginRight
+                size.height += getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+                let width = getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                 if width > size.width {
                     size.width = width
                 }
@@ -239,11 +239,11 @@ extension LinearLayoutView {
         var size = CGSize.zero
         for view in from.subviews {
             if from.direction == .horizontal {
-                size.width += view.frame.width + view.margin * 2 + view.marginLeft + view.marginRight
-                size.height = view.frame.maxY + view.margin + view.marginBottom
+                size.width += view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+                size.height = view.frame.maxY + view.lv.margin + view.lv.marginBottom
             } else {
-                size.height += view.frame.height + view.margin * 2 + view.marginTop + view.marginBottom
-                size.width = view.frame.maxX + view.margin + view.marginRight
+                size.height += view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+                size.width = view.frame.maxX + view.lv.margin + view.lv.marginRight
             }
         }
         return size
