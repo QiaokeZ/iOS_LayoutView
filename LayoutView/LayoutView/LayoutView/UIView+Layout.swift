@@ -255,3 +255,23 @@ private var alignLeftKey: Void?
 private var alignBottomKey: Void?
 private var alignRightKey: Void?
 private var alignParentKey: Void?
+
+public final class LayoutView<Base> {
+    public let base: Base
+    public init(_ base: Base) {
+        self.base = base
+    }
+}
+
+public protocol LayoutViewCompatible {
+    associatedtype CompatibleType
+    var lv: CompatibleType { get }
+}
+
+public extension LayoutViewCompatible {
+    public var lv: LayoutView<Self> {
+        get { return LayoutView(self) }
+    }
+}
+
+extension UIView: LayoutViewCompatible { }
