@@ -1,4 +1,4 @@
-# LayoutView(仿安卓布局)
+# LayoutView(仿Android布局)
 ## 简书：https://www.jianshu.com/p/bc22145f4eaf
 ## 快速、简单、方便的UI布局框架
 
