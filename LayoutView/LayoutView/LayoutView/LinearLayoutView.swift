@@ -156,63 +156,71 @@ extension LinearLayoutView {
     }
 
     private func getViewWidth(_ from: UIView) -> CGFloat {
-        var width = from.frame.width
-        switch from.lv.width {
-        case .fill:
-            if let value = from.superview, width == 0 {
-                width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                    if let child = value as? LinearLayoutView {
-                        if child.direction == .horizontal {
-                            for view in child.subviews {
-                                if view == from {
-                                    break
+        if from.frame.width > 0 {
+            return from.frame.width
+        } else {
+            var width = from.frame.width
+            switch from.lv.width {
+            case .fill:
+                if let value = from.superview {
+                    width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                        width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+                        if let child = value as? LinearLayoutView {
+                            if child.direction == .horizontal {
+                                for view in child.subviews {
+                                    if view == from {
+                                        break
+                                    }
+                                    width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                                 }
-                                width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                             }
                         }
                     }
                 }
+            case .px(let value):
+                width = value
+            case .wrap:
+                if let child = from as? LinearLayoutView {
+                    width = getLayoutWrapViewSize(child).width
+                }
             }
-        case .px(let value):
-            width = value
-        case .wrap:
-            if let child = from as? LinearLayoutView {
-                width = getLayoutWrapViewSize(child).width
-            }
+            return width
         }
-        return width
     }
 
     private func getViewHeight(_ from: UIView) -> CGFloat {
-        var height = from.frame.height
-        switch from.lv.height {
-        case .fill:
-            if let value = from.superview, height == 0 {
-                height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                    if let child = value as? LinearLayoutView {
-                        if child.direction == .vertical {
-                            for view in child.subviews {
-                                if view == from {
-                                    break
+        if from.frame.height > 0 {
+            return from.frame.height
+        } else {
+            var height = from.frame.height
+            switch from.lv.height {
+            case .fill:
+                if let value = from.superview {
+                    height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                        height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+                        if let child = value as? LinearLayoutView {
+                            if child.direction == .vertical {
+                                for view in child.subviews {
+                                    if view == from {
+                                        break
+                                    }
+                                    height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                                 }
-                                height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                             }
                         }
                     }
                 }
+            case .px(let value):
+                height = value
+            case .wrap:
+                if let child = from as? LinearLayoutView {
+                    height = getLayoutWrapViewSize(child).height
+                }
             }
-        case .px(let value):
-            height = value
-        case .wrap:
-            if let child = from as? LinearLayoutView {
-                height = getLayoutWrapViewSize(child).height
-            }
+            return height
         }
-        return height
     }
 
     private func getLayoutWrapViewSize(_ from: LinearLayoutView) -> CGSize {

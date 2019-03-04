@@ -23,6 +23,7 @@ extension RelativeViewTest6Controller {
         linearView1.backgroundColor = UIColor.random
         linearView1.lv.margin = 10
         linearView1.lv.gravity = .center
+        rootView.addSubview(linearView1)
         
         for _ in 0..<3{
             let button = UIButton()
@@ -33,6 +34,5 @@ extension RelativeViewTest6Controller {
             button.backgroundColor = UIColor.random
             linearView1.addSubview(button)
         }
-        rootView.addSubview(linearView1)
     }
 }

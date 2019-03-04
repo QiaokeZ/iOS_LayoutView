@@ -15,12 +15,11 @@ class LinearViewTest1Controller: UIViewController {
 extension LinearViewTest1Controller {
 
     private func parpareView() {
-        
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.margin = 10
         view.addSubview(rootView)
-        
+
         let label0 = UILabel()
         label0.lv.width = .fill
         label0.lv.margin = 5

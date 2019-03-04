@@ -109,38 +109,46 @@ extension RelativeLayoutView {
     }
 
     private func getViewWidth(_ from: UIView) -> CGFloat {
-        var width = from.frame.width
-        switch from.lv.width {
-        case .fill:
-            if let value = from.superview, width == 0 {
-                width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+        if from.frame.width > 0 {
+            return from.frame.width
+        } else {
+            var width = from.frame.width
+            switch from.lv.width {
+            case .fill:
+                if let value = from.superview {
+                    width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                        width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+                    }
                 }
+            case .px(let value):
+                width = value
+            case .wrap:
+                width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
             }
-        case .px(let value):
-            width = value
-        case .wrap:
-            width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
+            return width
         }
-        return width
     }
 
     private func getViewHeight(_ from: UIView) -> CGFloat {
-        var height = from.frame.height
-        switch from.lv.height {
-        case .fill:
-            if let value = from.superview, height == 0 {
-                height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                    height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+        if from.frame.height > 0 {
+            return from.frame.height
+        } else {
+            var height = from.frame.height
+            switch from.lv.height {
+            case .fill:
+                if let value = from.superview {
+                    height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
+                        height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+                    }
                 }
+            case .px(let value):
+                height = value
+            case .wrap:
+                height = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
             }
-        case .px(let value):
-            height = value
-        case .wrap:
-            height = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
+            return height
         }
-        return height
     }
 }
