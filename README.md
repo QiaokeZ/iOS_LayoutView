@@ -1,4 +1,5 @@
-# LayoutView
+# LayoutView(仿安卓布局)
+## 简书：https://www.jianshu.com/p/bc22145f4eaf
 ## 快速、简单、方便的UI布局框架
 
 ### LinearLayoutView 使用
