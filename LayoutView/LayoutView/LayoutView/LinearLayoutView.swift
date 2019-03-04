@@ -23,10 +23,10 @@ class LinearLayoutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(direction: LayoutDirection = .horizontal, gravity: LayoutGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
+    init(direction: LayoutDirection = .horizontal, contentGravity: LayoutGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.direction = direction
-        self.lv.gravity = gravity
+        self.lv.contentGravity = contentGravity
         self.lv.width = width
         self.lv.height = height
     }
@@ -83,26 +83,46 @@ extension LinearLayoutView {
                 size = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
             }
             if direction == .horizontal {
-                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft + size.width, y: view.lv.margin + view.lv.marginTop)
-                if view.lv.gravity == .center {
-                    if frame.height > view.frame.height {
-                        view.frame.origin.y = (frame.height - view.frame.height) / 2
-                    }
-                } else if view.lv.gravity == .bottom {
-                    if frame.height > view.frame.height + view.lv.margin + view.lv.marginBottom {
-                        view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
-                    }
+                view.frame.origin.x = view.lv.margin + view.lv.marginLeft + size.width
+                switch lv.contentGravity {
+                case .center, .centerVertical:
+                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
+                case .bottom:
+                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
+                default:
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
+                    break
+                }
+                switch view.lv.gravity {
+                case .center, .centerVertical:
+                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
+                case .centerHorizontal:
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
+                case .bottom:
+                    view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
+                default:
+                    break
                 }
             } else {
-                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop + size.height)
-                if view.lv.gravity == .center {
-                    if frame.width > view.frame.width {
-                        view.frame.origin.x = (frame.width - view.frame.width) / 2
-                    }
-                } else if view.lv.gravity == .right {
-                    if frame.width > view.frame.width + view.lv.margin + view.lv.marginRight {
-                        view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
-                    }
+                view.frame.origin.y = view.lv.margin + view.lv.marginTop + size.height
+                switch lv.contentGravity {
+                case .center, .centerHorizontal:
+                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
+                case .right:
+                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
+                default:
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
+                    break
+                }
+                switch view.lv.gravity {
+                case .center, .centerHorizontal:
+                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
+                case .centerVertical:
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
+                case .right:
+                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
+                default:
+                    break
                 }
             }
             lastView = view
@@ -110,46 +130,12 @@ extension LinearLayoutView {
         let childTotalSize = getViewChildTotalSize(self)
         for view in subviews {
             if direction == .horizontal {
-                let match = view.lv.gravity != .top && view.lv.gravity != .center && view.lv.gravity != .bottom
-                switch lv.gravity {
-                case .center:
-                    if match {
-                        view.frame.origin.y = (frame.height - view.frame.height) / 2
-                    }
+                if lv.contentGravity == .center{
                     view.frame.origin.x = view.frame.origin.x + (frame.width - childTotalSize.width) / 2
-                case .centerHorizontal:
-                    view.frame.origin.x = view.frame.origin.x + (frame.width - childTotalSize.width) / 2
-                case .centerVertical:
-                    if match {
-                        view.frame.origin.y = (frame.height - view.frame.height) / 2
-                    }
-                case .bottom:
-                    if match {
-                        view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
-                    }
-                default:
-                    break
                 }
             } else {
-                let match = view.lv.gravity != .left && view.lv.gravity != .center && view.lv.gravity != .right
-                switch lv.gravity {
-                case .center:
-                    if match {
-                        view.frame.origin.x = (frame.width - view.frame.width) / 2
-                    }
+                if lv.contentGravity == .center{
                     view.frame.origin.y = view.frame.origin.y + (frame.height - childTotalSize.height) / 2
-                case .centerVertical:
-                    view.frame.origin.y = view.frame.origin.y + (frame.height - childTotalSize.height) / 2
-                case .centerHorizontal:
-                    if match {
-                        view.frame.origin.x = (frame.width - view.frame.width) / 2
-                    }
-                case .right:
-                    if match {
-                        view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
-                    }
-                default:
-                    break
                 }
             }
         }

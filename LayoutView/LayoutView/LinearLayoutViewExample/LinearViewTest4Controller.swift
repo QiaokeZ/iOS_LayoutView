@@ -15,7 +15,7 @@ class LinearViewTest4Controller: UIViewController {
 extension LinearViewTest4Controller {
     
     private func parpareView() {
-        let rootView = LinearLayoutView(direction: .vertical, gravity: .center, width: .fill, height: .fill)
+        let rootView = LinearLayoutView(direction: .vertical, contentGravity: .center, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.marginTop = 10
         rootView.lv.marginLeft = 5
