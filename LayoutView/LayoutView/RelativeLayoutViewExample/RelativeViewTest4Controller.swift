@@ -20,8 +20,8 @@ extension RelativeViewTest4Controller {
         view.addSubview(rootView)
 
         let label = UILabel()
-        label.lv.height = .px(100)
-        label.lv.width = .px(100)
+        label.lv.height = .pt(100)
+        label.lv.width = .pt(100)
         label.lv.margin = 10
         label.lv.alignParent = [.top, .left]
         label.text = "label"
@@ -30,8 +30,8 @@ extension RelativeViewTest4Controller {
         rootView.addSubview(label)
 
         let label1 = UILabel()
-        label1.lv.height = .px(100)
-        label1.lv.width = .px(100)
+        label1.lv.height = .pt(100)
+        label1.lv.width = .pt(100)
         label1.lv.margin = 10
         label1.lv.alignParent = [.top, .right]
         label1.text = "label1"
@@ -40,8 +40,8 @@ extension RelativeViewTest4Controller {
         rootView.addSubview(label1)
 
         let label2 = UILabel()
-        label2.lv.height = .px(100)
-        label2.lv.width = .px(100)
+        label2.lv.height = .pt(100)
+        label2.lv.width = .pt(100)
         label2.lv.margin = 10
         label2.lv.alignParent = [.bottom, .left]
         label2.text = "label2"
@@ -50,8 +50,8 @@ extension RelativeViewTest4Controller {
         rootView.addSubview(label2)
 
         let label3 = UILabel()
-        label3.lv.height = .px(100)
-        label3.lv.width = .px(100)
+        label3.lv.height = .pt(100)
+        label3.lv.width = .pt(100)
         label3.lv.margin = 10
         label3.lv.alignParent = [.bottom, .right]
         label3.text = "label3"

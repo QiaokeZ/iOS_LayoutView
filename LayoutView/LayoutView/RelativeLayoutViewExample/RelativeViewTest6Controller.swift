@@ -27,7 +27,7 @@ extension RelativeViewTest6Controller {
         
         for _ in 0..<3{
             let button = UIButton()
-            button.lv.height = .px(300)
+            button.lv.height = .pt(300)
             button.lv.width = .fill
             button.lv.weight = 1
             button.lv.margin = 10

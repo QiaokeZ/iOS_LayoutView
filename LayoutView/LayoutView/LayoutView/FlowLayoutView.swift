@@ -105,7 +105,7 @@ extension FlowLayoutView {
                         width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 width = value
             case .wrap:
                 width = 0
@@ -127,7 +127,7 @@ extension FlowLayoutView {
                         height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 height = value
             case .wrap:
                 height = 0

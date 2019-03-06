@@ -121,7 +121,7 @@ extension RelativeLayoutView {
                         width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 width = value
             case .wrap:
                 width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
@@ -143,7 +143,7 @@ extension RelativeLayoutView {
                         height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 height = value
             case .wrap:
                 height = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0

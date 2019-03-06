@@ -100,6 +100,8 @@ extension LinearLayoutView {
                     view.frame.origin.y = view.lv.margin + view.lv.marginTop
                 case .bottom:
                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
+                case .top:
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
                 default:
                     break
                 }
@@ -121,6 +123,8 @@ extension LinearLayoutView {
                     view.frame.origin.x = view.lv.margin + view.lv.marginLeft
                 case .right:
                     view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
+                case .left:
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
                 default:
                     break
                 }
@@ -164,7 +168,7 @@ extension LinearLayoutView {
                         }
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 width = value
             case .wrap:
                 if let child = from as? LinearLayoutView {
@@ -198,7 +202,7 @@ extension LinearLayoutView {
                         }
                     }
                 }
-            case .px(let value):
+            case .pt(let value):
                 height = value
             case .wrap:
                 if let child = from as? LinearLayoutView {

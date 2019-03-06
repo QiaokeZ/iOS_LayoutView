@@ -20,8 +20,8 @@ extension RelativeViewTest2Controller {
         view.addSubview(rootView)
 
         let label = UILabel()
-        label.lv.height = .px(100)
-        label.lv.width = .px(100)
+        label.lv.height = .pt(100)
+        label.lv.width = .pt(100)
         label.lv.margin = 10
         label.textAlignment = .center
         label.lv.gravity = .center
@@ -30,8 +30,8 @@ extension RelativeViewTest2Controller {
         rootView.addSubview(label)
 
         let label1 = UILabel()
-        label1.lv.height = .px(100)
-        label1.lv.width = .px(100)
+        label1.lv.height = .pt(100)
+        label1.lv.width = .pt(100)
         label1.lv.margin = 10
         label1.textAlignment = .center
         label1.lv.toTopOf = label
@@ -40,8 +40,8 @@ extension RelativeViewTest2Controller {
         rootView.addSubview(label1)
 
         let label2 = UILabel()
-        label2.lv.height = .px(100)
-        label2.lv.width = .px(100)
+        label2.lv.height = .pt(100)
+        label2.lv.width = .pt(100)
         label2.lv.margin = 10
         label2.textAlignment = .center
         label2.lv.toLeftOf = label
@@ -50,8 +50,8 @@ extension RelativeViewTest2Controller {
         rootView.addSubview(label2)
 
         let label3 = UILabel()
-        label3.lv.height = .px(100)
-        label3.lv.width = .px(100)
+        label3.lv.height = .pt(100)
+        label3.lv.width = .pt(100)
         label3.lv.margin = 10
         label3.textAlignment = .center
         label3.lv.toBottomOf = label
@@ -60,8 +60,8 @@ extension RelativeViewTest2Controller {
         rootView.addSubview(label3)
 
         let label4 = UILabel()
-        label4.lv.height = .px(100)
-        label4.lv.width = .px(100)
+        label4.lv.height = .pt(100)
+        label4.lv.width = .pt(100)
         label4.lv.margin = 10
         label4.textAlignment = .center
         label4.lv.toRightOf = label

@@ -24,8 +24,8 @@ extension FlowViewTest1Controller{
             let label = UILabel()
             label.lv.marginLeft = 5
             label.lv.marginTop = 5
-            label.lv.height = .px(100)
-            label.lv.width = .px(60)
+            label.lv.height = .pt(100)
+            label.lv.width = .pt(60)
             label.text = "label\(i)"
             label.textAlignment = .center
             label.backgroundColor = UIColor.random

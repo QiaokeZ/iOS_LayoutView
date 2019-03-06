@@ -19,7 +19,7 @@ enum LayoutDirection: Int {
 enum LayoutSize {
     case fill
     case wrap
-    case px(CGFloat)
+    case pt(CGFloat)
 }
 
 enum LayoutGravity {
@@ -52,7 +52,7 @@ extension LayoutView where Base: UIView {
             if let value = objc_getAssociatedObject(base, &heightKey) as? LayoutSize {
                 return value
             }
-            return LayoutSize.px(0)
+            return LayoutSize.pt(0)
         }
     }
     
@@ -64,7 +64,7 @@ extension LayoutView where Base: UIView {
             if let value = objc_getAssociatedObject(base, &widthKey) as? LayoutSize {
                 return value
             }
-            return LayoutSize.px(0)
+            return LayoutSize.pt(0)
         }
     }
     
