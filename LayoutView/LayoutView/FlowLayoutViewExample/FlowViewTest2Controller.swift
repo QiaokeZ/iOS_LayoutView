@@ -8,14 +8,12 @@ class FlowViewTest2Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        parpareView()
     }
 }
 
 extension FlowViewTest2Controller{
     
-    private func parpareView() {
-        
+    override func viewDidLayoutSubviews() {
         let rootView = FlowLayoutView(direction: .horizontal, width: .fill, height: .fill)
         rootView.lv.margin = 10
         rootView.backgroundColor = UIColor.random
@@ -32,5 +30,6 @@ extension FlowViewTest2Controller{
             label.backgroundColor = UIColor.random
             rootView.addSubview(label)
         }
+        rootView.layout()
     }
 }

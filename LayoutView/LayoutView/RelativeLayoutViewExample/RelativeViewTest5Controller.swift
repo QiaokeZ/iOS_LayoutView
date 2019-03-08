@@ -7,13 +7,12 @@ class RelativeViewTest5Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        parpareView()
     }
 }
 
 extension RelativeViewTest5Controller {
     
-    private func parpareView() {
+    override func viewDidLayoutSubviews() {
         let rootView = RelativeLayoutView(width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.random
         rootView.lv.margin = 10
@@ -112,6 +111,7 @@ extension RelativeViewTest5Controller {
         label8.textAlignment = .center
         label8.backgroundColor = UIColor.random
         rootView.addSubview(label8)
+        rootView.layout()
     }
     
 }

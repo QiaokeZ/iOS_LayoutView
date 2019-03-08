@@ -27,8 +27,7 @@ class RelativeLayoutView: UIView {
         self.lv.height = height
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    public func layout() {
         setChildViewSize()
         setChildViewOrigin()
         setLayoutViewFrame()
@@ -40,11 +39,14 @@ extension RelativeLayoutView {
     private func setChildViewSize() {
         for view in subviews {
             view.frame = .zero
-            if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
-                view.setNeedsLayout()
-                view.layoutIfNeeded()
-            } else {
-                view.frame.size = CGSize(width: getViewWidth(view), height: getViewHeight(view))
+            if let linear = view as? LinearLayoutView {
+                linear.layout()
+            } else if let relative = view as? RelativeLayoutView {
+                relative.layout()
+            } else if let flow = view as? FlowLayoutView {
+                flow.layout()
+            }else{
+                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
             }
         }
     }
@@ -52,59 +54,59 @@ extension RelativeLayoutView {
     private func setChildViewOrigin() {
         let parentSize = CGSize(width: getViewWidth(self), height: getViewHeight(self))
         for view in subviews {
-            view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop)
+            view.frame.origin = CGPoint(x: ceil(view.lv.margin + view.lv.marginLeft), y: ceil(view.lv.margin + view.lv.marginTop))
             if let toTopView = view.lv.toTopOf {
-                view.frame.origin.y = toTopView.frame.origin.y - toTopView.lv.margin - toTopView.lv.marginTop - (view.frame.height + view.lv.margin + view.lv.marginBottom)
+                view.frame.origin.y = ceil(toTopView.frame.origin.y - toTopView.lv.margin - toTopView.lv.marginTop - (view.frame.height + view.lv.margin + view.lv.marginBottom))
             }
             if let toLeftView = view.lv.toLeftOf {
-                view.frame.origin.x = toLeftView.frame.origin.x - toLeftView.lv.margin - toLeftView.lv.marginLeft - (view.frame.width + view.lv.margin + view.lv.marginRight)
+                view.frame.origin.x = ceil(toLeftView.frame.origin.x - toLeftView.lv.margin - toLeftView.lv.marginLeft - (view.frame.width + view.lv.margin + view.lv.marginRight))
             }
             if let toBottomView = view.lv.toBottomOf {
-                view.frame.origin.y = toBottomView.frame.maxY + toBottomView.lv.margin + toBottomView.lv.marginBottom + view.lv.margin + view.lv.marginTop
+                view.frame.origin.y = ceil(toBottomView.frame.maxY + toBottomView.lv.margin + toBottomView.lv.marginBottom + view.lv.margin + view.lv.marginTop)
             }
             if let toRightView = view.lv.toRightOf {
-                view.frame.origin.x = toRightView.frame.maxX + toRightView.lv.margin + toRightView.lv.marginRight + view.lv.margin + view.lv.marginLeft
+                view.frame.origin.x = ceil(toRightView.frame.maxX + toRightView.lv.margin + toRightView.lv.marginRight + view.lv.margin + view.lv.marginLeft)
             }
             if let alignTopView = view.lv.alignTop {
-                view.frame.origin.y = alignTopView.frame.origin.y + view.lv.margin + view.lv.marginTop
+                view.frame.origin.y = ceil(alignTopView.frame.origin.y + view.lv.margin + view.lv.marginTop)
             }
             if let alignLeftView = view.lv.alignLeft {
-                view.frame.origin.x = alignLeftView.frame.origin.x + view.lv.margin + view.lv.marginLeft
+                view.frame.origin.x = ceil(alignLeftView.frame.origin.x + view.lv.margin + view.lv.marginLeft)
             }
             if let alignBottomView = view.lv.alignBottom {
-                view.frame.origin.y = alignBottomView.frame.maxY - (view.frame.height + view.lv.margin + view.lv.marginBottom)
+                view.frame.origin.y = ceil(alignBottomView.frame.maxY - (view.frame.height + view.lv.margin + view.lv.marginBottom))
             }
             if let alignRightView = view.lv.alignRight {
-                view.frame.origin.x = alignRightView.frame.maxX - (view.frame.width + view.lv.margin + view.lv.marginLeft)
+                view.frame.origin.x = ceil(alignRightView.frame.maxX - (view.frame.width + view.lv.margin + view.lv.marginLeft))
             }
             if view.lv.alignParent.contains(.top) {
-                view.frame.origin.y = view.lv.margin + view.lv.marginTop
+                view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop)
             }
             if view.lv.alignParent.contains(.left) {
-                view.frame.origin.x = view.lv.margin + view.lv.marginLeft
+                view.frame.origin.x = ceil(view.lv.margin + view.lv.marginLeft)
             }
             if view.lv.alignParent.contains(.bottom) {
-                view.frame.origin.y = parentSize.height - (view.frame.height + view.lv.margin + view.lv.marginBottom)
+                view.frame.origin.y = ceil(parentSize.height - (view.frame.height + view.lv.margin + view.lv.marginBottom))
             }
             if view.lv.alignParent.contains(.right) {
-                view.frame.origin.x = parentSize.width - (view.frame.width + view.lv.margin + view.lv.marginRight)
+                view.frame.origin.x = ceil(parentSize.width - (view.frame.width + view.lv.margin + view.lv.marginRight))
             }
             if view.lv.gravity == .center {
-                view.frame.origin = CGPoint(x: ((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight), y: ((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom))
+                view.frame.origin = CGPoint(x: ceil(((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)), y: ceil(((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)))
             }
             if view.lv.gravity == .centerHorizontal {
-                view.frame.origin.x = ((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
+                view.frame.origin.x = ceil(((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight))
             }
             if view.lv.gravity == .centerVertical {
-                view.frame.origin.y = ((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
+                view.frame.origin.y = ceil(((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom))
             }
         }
     }
     
     private func setLayoutViewFrame() {
         if frame == .zero {
-            frame.size = CGSize(width: getViewWidth(self), height: getViewHeight(self))
-            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
+            frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
+            frame.origin = CGPoint(x: ceil(lv.margin + lv.marginLeft), y: ceil(lv.margin + lv.marginTop))
         }
     }
     

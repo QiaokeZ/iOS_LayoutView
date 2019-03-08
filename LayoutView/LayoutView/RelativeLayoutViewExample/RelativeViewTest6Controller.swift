@@ -7,13 +7,12 @@ class RelativeViewTest6Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        parpareView()
     }
 }
 
 extension RelativeViewTest6Controller {
     
-    private func parpareView() {
+    override func viewDidLayoutSubviews() {
         let rootView = RelativeLayoutView(width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.random
         rootView.lv.margin = 10
@@ -34,5 +33,6 @@ extension RelativeViewTest6Controller {
             button.backgroundColor = UIColor.random
             linearView1.addSubview(button)
         }
+        rootView.layout()
     }
 }

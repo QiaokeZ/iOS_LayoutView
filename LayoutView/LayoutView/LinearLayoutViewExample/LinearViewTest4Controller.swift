@@ -8,13 +8,13 @@ class LinearViewTest4Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        parpareView()
     }
 }
 
 extension LinearViewTest4Controller {
     
-    private func parpareView() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         let rootView = LinearLayoutView(direction: .vertical, contentGravity: .center, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.marginTop = 10
@@ -68,5 +68,6 @@ extension LinearViewTest4Controller {
             label.backgroundColor = UIColor.random
             linearView5.addSubview(label)
         }
+        rootView.layout()
     }
 }

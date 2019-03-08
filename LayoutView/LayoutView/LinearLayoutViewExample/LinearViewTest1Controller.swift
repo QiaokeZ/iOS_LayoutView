@@ -8,18 +8,18 @@ class LinearViewTest1Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-        parpareView()
     }
 }
 
 extension LinearViewTest1Controller {
 
-    private func parpareView() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.margin = 10
         view.addSubview(rootView)
-
+        
         let label0 = UILabel()
         label0.lv.width = .fill
         label0.lv.margin = 5
@@ -28,7 +28,7 @@ extension LinearViewTest1Controller {
         label0.text = "label\(0)"
         label0.backgroundColor = UIColor.random
         rootView.addSubview(label0)
-
+        
         let label1 = UILabel()
         label1.lv.width = .fill
         label1.lv.margin = 5
@@ -37,7 +37,7 @@ extension LinearViewTest1Controller {
         label1.text = "label\(1)"
         label1.backgroundColor = UIColor.random
         rootView.addSubview(label1)
-
+        
         let label2 = UILabel()
         label2.lv.width = .pt(100)
         label2.lv.margin = 5
@@ -46,7 +46,7 @@ extension LinearViewTest1Controller {
         label2.textAlignment = .center
         label2.backgroundColor = UIColor.random
         rootView.addSubview(label2)
-
+        
         let label3 = UILabel()
         label3.lv.width = .pt(100)
         label3.lv.margin = 5
@@ -56,7 +56,7 @@ extension LinearViewTest1Controller {
         label3.textAlignment = .center
         label3.backgroundColor = UIColor.random
         rootView.addSubview(label3)
-
+        
         let label4 = UILabel()
         label4.lv.width = .pt(100)
         label4.lv.margin = 5
@@ -66,5 +66,6 @@ extension LinearViewTest1Controller {
         label4.textAlignment = .center
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
+        rootView.layout()
     }
 }
