@@ -77,7 +77,7 @@ extension LinearLayoutView {
     private func setLayoutViewFrame() {
         if frame == .zero {
             frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
-            frame.origin = CGPoint(x: ceil(lv.margin + lv.marginLeft), y: ceil(lv.margin + lv.marginTop))
+            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
         }
     }
     
@@ -92,45 +92,45 @@ extension LinearLayoutView {
                 view.frame.origin.x = view.lv.margin + view.lv.marginLeft + size.width
                 switch lv.contentGravity {
                 case .center, .centerVertical:
-                    view.frame.origin.y = ceil(((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom))
+                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .bottom:
-                    view.frame.origin.y = ceil(frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom)
+                    view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 default:
-                    view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop)
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
                     break
                 }
                 switch view.lv.gravity {
                 case .center, .centerVertical:
-                    view.frame.origin.y = ceil(((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom))
+                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .centerHorizontal:
-                    view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop)
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
                 case .bottom:
-                    view.frame.origin.y = ceil(frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom)
+                    view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 case .top:
-                    view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop)
+                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
                 default:
                     break
                 }
             } else {
-                view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop + size.height)
+                view.frame.origin.y = view.lv.margin + view.lv.marginTop + size.height
                 switch lv.contentGravity {
                 case .center, .centerHorizontal:
-                    view.frame.origin.x = ceil(((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight))
+                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .right:
-                    view.frame.origin.x = ceil(frame.width - view.frame.width - view.lv.margin - view.lv.marginRight)
+                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 default:
-                    view.frame.origin.x = ceil(view.lv.margin + view.lv.marginLeft)
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
                     break
                 }
                 switch view.lv.gravity {
                 case .center, .centerHorizontal:
-                    view.frame.origin.x = ceil(((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight))
+                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .centerVertical:
-                    view.frame.origin.x = ceil(view.lv.margin + view.lv.marginLeft)
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
                 case .right:
-                    view.frame.origin.x = ceil(frame.width - view.frame.width - view.lv.margin - view.lv.marginRight)
+                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 case .left:
-                    view.frame.origin.x = ceil(view.lv.margin + view.lv.marginLeft)
+                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
                 default:
                     break
                 }
@@ -141,11 +141,11 @@ extension LinearLayoutView {
         for view in subviews {
             if direction == .horizontal {
                 if lv.contentGravity == .center {
-                    view.frame.origin.x = ceil(view.frame.origin.x + (frame.width - childTotalSize.width) / 2)
+                    view.frame.origin.x = view.frame.origin.x + (frame.width - childTotalSize.width) / 2
                 }
             } else {
                 if lv.contentGravity == .center {
-                    view.frame.origin.y = ceil(view.frame.origin.y + (frame.height - childTotalSize.height) / 2)
+                    view.frame.origin.y = view.frame.origin.y + (frame.height - childTotalSize.height) / 2
                 }
             }
         }

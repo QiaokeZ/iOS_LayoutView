@@ -61,25 +61,25 @@ extension FlowLayoutView {
         var max: CGSize = .zero
         for view in subviews {
             if direction == .horizontal {
-                view.frame.origin = CGPoint(x: ceil(view.lv.margin + view.lv.marginLeft), y: ceil(view.lv.margin + view.lv.marginTop))
+                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop)
                 if let value = lastView {
-                    view.frame.origin.x = ceil(value.lv.margin + view.lv.marginRight + value.frame.maxX + view.lv.margin + view.lv.marginLeft)
-                    view.frame.origin.y = ceil(max.height + value.lv.margin + value.lv.marginBottom + view.lv.margin + view.lv.marginTop)
+                    view.frame.origin.x = value.lv.margin + view.lv.marginRight + value.frame.maxX + view.lv.margin + view.lv.marginLeft
+                    view.frame.origin.y = max.height + value.lv.margin + value.lv.marginBottom + view.lv.margin + view.lv.marginTop
                     if view.frame.maxX + value.lv.margin + view.lv.marginRight > totalSize.width {
-                        view.frame.origin.x = ceil(view.lv.margin + view.lv.marginLeft)
-                        view.frame.origin.y = ceil(value.lv.margin + value.lv.marginBottom + value.frame.maxY + view.lv.margin + view.lv.marginTop)
-                        max.height = ceil(view.frame.origin.y - view.lv.marginTop)
+                        view.frame.origin.x = view.lv.margin + view.lv.marginLeft
+                        view.frame.origin.y = value.lv.margin + value.lv.marginBottom + value.frame.maxY + view.lv.margin + view.lv.marginTop
+                        max.height = view.frame.origin.y - view.lv.marginTop
                     }
                 }
             } else {
-                view.frame.origin = CGPoint(x: ceil(view.lv.margin + view.lv.marginLeft), y: ceil(view.lv.margin + view.lv.marginTop))
+                view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop)
                 if let value = lastView {
-                    view.frame.origin.y = ceil(value.lv.margin + view.lv.marginBottom + value.frame.maxY + view.lv.margin + view.lv.marginTop)
-                    view.frame.origin.x = ceil(max.width + value.lv.margin + value.lv.marginRight + view.lv.margin + view.lv.marginLeft)
+                    view.frame.origin.y = value.lv.margin + view.lv.marginBottom + value.frame.maxY + view.lv.margin + view.lv.marginTop
+                    view.frame.origin.x = max.width + value.lv.margin + value.lv.marginRight + view.lv.margin + view.lv.marginLeft
                     if view.frame.maxY + value.lv.margin + view.lv.marginBottom > totalSize.height {
-                        view.frame.origin.x = ceil(value.lv.margin + value.lv.marginRight + value.frame.maxX + view.lv.margin + view.lv.marginLeft)
-                        view.frame.origin.y = ceil(view.lv.margin + view.lv.marginTop)
-                        max.width = ceil(view.frame.origin.x - view.lv.marginLeft)
+                        view.frame.origin.x = value.lv.margin + value.lv.marginRight + value.frame.maxX + view.lv.margin + view.lv.marginLeft
+                        view.frame.origin.y = view.lv.margin + view.lv.marginTop
+                        max.width = view.frame.origin.x - view.lv.marginLeft
                     }
                 }
             }
@@ -90,7 +90,7 @@ extension FlowLayoutView {
     private func setLayoutViewFrame() {
         if frame == .zero {
             frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
-            frame.origin = CGPoint(x: ceil(lv.margin + lv.marginLeft), y: ceil(lv.margin + lv.marginTop))
+            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
         }
     }
     
