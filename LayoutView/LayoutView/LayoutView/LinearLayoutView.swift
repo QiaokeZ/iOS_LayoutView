@@ -162,16 +162,16 @@ extension LinearLayoutView {
                     width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
                         width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                        if let child = value as? LinearLayoutView {
-                            if child.direction == .horizontal {
-                                for view in child.subviews {
-                                    if view == from {
-                                        break
-                                    }
-                                    width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
-                                }
-                            }
-                        }
+//                        if let child = value as? LinearLayoutView {
+//                            if child.direction == .horizontal {
+//                                for view in child.subviews {
+//                                    if view == from {
+//                                        break
+//                                    }
+//                                    width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+//                                }
+//                            }
+//                        }
                     }
                 }
             case .pt(let value):
@@ -196,16 +196,16 @@ extension LinearLayoutView {
                     height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
                         height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                        if let child = value as? LinearLayoutView {
-                            if child.direction == .vertical {
-                                for view in child.subviews {
-                                    if view == from {
-                                        break
-                                    }
-                                    height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
-                                }
-                            }
-                        }
+//                        if let child = value as? LinearLayoutView {
+//                            if child.direction == .vertical {
+//                                for view in child.subviews {
+//                                    if view == from {
+//                                        break
+//                                    }
+//                                    height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+//                                }
+//                            }
+//                        }
                     }
                 }
             case .pt(let value):
