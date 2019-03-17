@@ -148,7 +148,7 @@ extension RelativeLayoutView {
             case .pt(let value):
                 height = value
             case .wrap:
-                height = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
+                height = from.subviews.map { $0.frame.maxY + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
             }
             return height
         }
