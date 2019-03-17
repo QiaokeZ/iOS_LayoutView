@@ -25,7 +25,6 @@ extension LinearViewTest3Controller {
         linearView1.lv.weight = 1
         linearView1.lv.margin = 5
         rootView.addSubview(linearView1)
-        print(linearView1)
   
         for i in 0..<3{
             let label = UILabel()
