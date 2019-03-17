@@ -1,6 +1,6 @@
 //
 //  UIView+Layout.swift
-//  UIView+Layout <https://github.com/QiaokeZ/iOS_LayoutView>
+//  UIView+Layout <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
 //  Created by admin on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
@@ -10,11 +10,6 @@
 //
 
 import UIKit
-
-enum LayoutDirection: Int {
-    case vertical
-    case horizontal
-}
 
 enum LayoutSize {
     case fill
@@ -74,18 +69,6 @@ extension LayoutView where Base: UIView {
         }
         get {
             if let value = objc_getAssociatedObject(base, &gravityKey) as? LayoutGravity {
-                return value
-            }
-            return .none
-        }
-    }
-    
-    var contentGravity: LayoutGravity {
-        set {
-            objc_setAssociatedObject(base, &contentGravityKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            if let value = objc_getAssociatedObject(base, &contentGravityKey) as? LayoutGravity {
                 return value
             }
             return .none
@@ -256,7 +239,6 @@ private var marginBottomKey: Void?
 private var marginRightKey: Void?
 private var weightKey: Void?
 private var gravityKey: Void?
-private var contentGravityKey: Void?
 private var heightKey: Void?
 private var widthKey: Void?
 private var toTopOfKey: Void?

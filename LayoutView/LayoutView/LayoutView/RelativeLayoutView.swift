@@ -1,6 +1,6 @@
 //
 //  RelativeLayoutView.swift
-//  RelativeLayoutView <https://github.com/QiaokeZ/iOS_LayoutView>
+//  RelativeLayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
 //  Created by admin on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.

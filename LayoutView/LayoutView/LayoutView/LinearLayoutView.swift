@@ -1,6 +1,6 @@
 //
 //  LinearLayoutView.swift
-//  LinearLayoutView <https://github.com/QiaokeZ/iOS_LayoutView>
+//  LinearLayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
 //  Created by admin on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
@@ -11,9 +11,26 @@
 
 import UIKit
 
+enum LinearLayoutDirection: Int {
+    case vertical
+    case horizontal
+}
+
+enum LinearLayoutContentGravity{
+    case none
+    case top
+    case left
+    case bottom
+    case right
+    case center
+    case centerHorizontal
+    case centerVertical
+}
+
 class LinearLayoutView: UIView {
     
-    private(set) var direction: LayoutDirection = .horizontal
+    private(set) var direction: LinearLayoutDirection = .horizontal
+    private(set) var contentGravity: LinearLayoutContentGravity = .none
     
     private override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -23,10 +40,10 @@ class LinearLayoutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(direction: LayoutDirection = .horizontal, contentGravity: LayoutGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
+    init(direction: LinearLayoutDirection = .horizontal, contentGravity: LinearLayoutContentGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.direction = direction
-        self.lv.contentGravity = contentGravity
+        self.contentGravity = contentGravity
         self.lv.width = width
         self.lv.height = height
     }
@@ -90,7 +107,7 @@ extension LinearLayoutView {
             }
             if direction == .horizontal {
                 view.frame.origin.x = view.lv.margin + view.lv.marginLeft + size.width
-                switch lv.contentGravity {
+                switch contentGravity {
                 case .center, .centerVertical:
                     view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .bottom:
@@ -113,7 +130,7 @@ extension LinearLayoutView {
                 }
             } else {
                 view.frame.origin.y = view.lv.margin + view.lv.marginTop + size.height
-                switch lv.contentGravity {
+                switch contentGravity {
                 case .center, .centerHorizontal:
                     view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .right:
@@ -140,11 +157,11 @@ extension LinearLayoutView {
         let childTotalSize = getViewChildTotalSize(self)
         for view in subviews {
             if direction == .horizontal {
-                if lv.contentGravity == .center {
+                if contentGravity == .center {
                     view.frame.origin.x = view.frame.origin.x + (frame.width - childTotalSize.width) / 2
                 }
             } else {
-                if lv.contentGravity == .center {
+                if contentGravity == .center {
                     view.frame.origin.y = view.frame.origin.y + (frame.height - childTotalSize.height) / 2
                 }
             }

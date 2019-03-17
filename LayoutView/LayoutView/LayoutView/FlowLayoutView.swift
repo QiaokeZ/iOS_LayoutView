@@ -1,6 +1,6 @@
 //
 //  FlowLayoutView.swift
-//  FlowLayoutView <https://github.com/QiaokeZ/iOS_LayoutView>
+//  FlowLayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
 //  Created by admin on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
@@ -11,9 +11,14 @@
 
 import UIKit
 
+enum FlowLayoutDirection: Int {
+    case vertical
+    case horizontal
+}
+
 class FlowLayoutView: UIView {
     
-    private(set) var direction: LayoutDirection = .horizontal
+    private(set) var direction: FlowLayoutDirection = .horizontal
     public var autoArrange: Bool = false
     
     private override init(frame: CGRect) {
@@ -24,7 +29,7 @@ class FlowLayoutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(direction: LayoutDirection = .horizontal, width: LayoutSize = .fill, height: LayoutSize = .fill) {
+    init(direction: FlowLayoutDirection = .horizontal, width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.direction = direction
         self.lv.width = width
