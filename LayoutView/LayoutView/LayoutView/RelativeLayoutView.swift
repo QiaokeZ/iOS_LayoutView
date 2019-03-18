@@ -28,7 +28,6 @@ class RelativeLayoutView: UIView {
     }
     
     public func layout() {
-        frame = .zero
         setChildViewSize()
         setChildViewOrigin()
         setLayoutViewFrame()
