@@ -37,6 +37,7 @@ class FlowLayoutView: UIView {
     }
     
     public func layout() {
+        frame = .zero
         setChildViewSize()
         setLayoutViewFrame()
         setChildViewOrigin()
