@@ -23,7 +23,6 @@ class ViewController: UIViewController {
         view.addSubview(tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "layout")
     }
-
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {

@@ -16,7 +16,7 @@ enum LinearLayoutDirection: Int {
     case horizontal
 }
 
-enum LinearLayoutContentGravity{
+enum LinearLayoutContentGravity {
     case none
     case top
     case left
@@ -75,9 +75,10 @@ extension LinearLayoutView {
         for view in subviews {
             view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
             if view.lv.weight > 0 {
-                if direction == .horizontal {
+                switch direction {
+                case .horizontal:
                     view.frame.size.width = ceil(max((view.lv.weight * (parentSize.width - surplusSize.width) / totalWeight), 0))
-                } else {
+                case .vertical:
                     view.frame.size.height = ceil(max((view.lv.weight * (parentSize.height - surplusSize.height) / totalWeight), 0))
                 }
             }
@@ -105,11 +106,14 @@ extension LinearLayoutView {
             if let value = lastView {
                 size = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
             }
-            if direction == .horizontal {
+            switch direction {
+            case .horizontal:
                 view.frame.origin.x = view.lv.margin + view.lv.marginLeft + size.width
                 switch contentGravity {
-                case .center, .centerVertical:
+                case .centerVertical:
                     view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
+                case .centerHorizontal:
+                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .bottom:
                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 default:
@@ -120,7 +124,7 @@ extension LinearLayoutView {
                 case .center, .centerVertical:
                     view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .centerHorizontal:
-                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
+                    view.frame.origin.x = (frame.width - view.frame.width) / 2
                 case .bottom:
                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 case .top:
@@ -128,11 +132,13 @@ extension LinearLayoutView {
                 default:
                     break
                 }
-            } else {
+            case .vertical:
                 view.frame.origin.y = view.lv.margin + view.lv.marginTop + size.height
                 switch contentGravity {
-                case .center, .centerHorizontal:
+                case .centerHorizontal:
                     view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
+                case .centerVertical:
+                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .right:
                     view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 default:
@@ -143,7 +149,7 @@ extension LinearLayoutView {
                 case .center, .centerHorizontal:
                     view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .centerVertical:
-                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
+                    view.frame.origin.y = (frame.height - view.frame.height) / 2
                 case .right:
                     view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 case .left:
@@ -156,11 +162,12 @@ extension LinearLayoutView {
         }
         let childTotalSize = getViewChildTotalSize(self)
         for view in subviews {
-            if direction == .horizontal {
+            switch direction {
+            case .horizontal:
                 if contentGravity == .center {
                     view.frame.origin.x = view.frame.origin.x + (frame.width - childTotalSize.width) / 2
                 }
-            } else {
+            case .vertical:
                 if contentGravity == .center {
                     view.frame.origin.y = view.frame.origin.y + (frame.height - childTotalSize.height) / 2
                 }
@@ -179,16 +186,6 @@ extension LinearLayoutView {
                     width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
                         width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-//                        if let child = value as? LinearLayoutView {
-//                            if child.direction == .horizontal {
-//                                for view in child.subviews {
-//                                    if view == from {
-//                                        break
-//                                    }
-//                                    width -= view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
-//                                }
-//                            }
-//                        }
                     }
                 }
             case .pt(let value):
@@ -213,16 +210,6 @@ extension LinearLayoutView {
                     height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
                         height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-//                        if let child = value as? LinearLayoutView {
-//                            if child.direction == .vertical {
-//                                for view in child.subviews {
-//                                    if view == from {
-//                                        break
-//                                    }
-//                                    height -= view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
-//                                }
-//                            }
-//                        }
                     }
                 }
             case .pt(let value):
@@ -239,13 +226,14 @@ extension LinearLayoutView {
     private func getLayoutWrapViewSize(_ from: LinearLayoutView) -> CGSize {
         var size = CGSize.zero
         for view in from.subviews {
-            if from.direction == .horizontal {
+            switch from.direction {
+            case .horizontal:
                 size.width += getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                 let height = getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                 if height > size.height {
                     size.height = height
                 }
-            } else {
+            case .vertical:
                 size.height += getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                 let width = getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                 if width > size.width {
@@ -259,10 +247,11 @@ extension LinearLayoutView {
     private func getViewChildTotalSize(_ from: LinearLayoutView) -> CGSize {
         var size = CGSize.zero
         for view in from.subviews {
-            if from.direction == .horizontal {
+            switch from.direction {
+            case .horizontal:
                 size.width += view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
                 size.height = view.frame.maxY + view.lv.margin + view.lv.marginBottom
-            } else {
+            case .vertical:
                 size.height += view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
                 size.width = view.frame.maxX + view.lv.margin + view.lv.marginRight
             }
