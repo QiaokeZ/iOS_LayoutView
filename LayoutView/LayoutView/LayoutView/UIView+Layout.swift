@@ -230,30 +230,6 @@ extension LayoutView where Base: UIView {
             return [.none]
         }
     }
-
-    var columnScale: CGFloat {
-        set {
-            objc_setAssociatedObject(base, &columnScaleKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            if let value = objc_getAssociatedObject(base, &columnScaleKey) as? CGFloat {
-                return value
-            }
-            return 0
-        }
-    }
-
-    var rowScale: CGFloat {
-        set {
-            objc_setAssociatedObject(base, &rowScaleKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            if let value = objc_getAssociatedObject(base, &rowScaleKey) as? CGFloat {
-                return value
-            }
-            return 0
-        }
-    }
 }
 
 private var marginKey: Void?
@@ -274,8 +250,6 @@ private var alignLeftKey: Void?
 private var alignBottomKey: Void?
 private var alignRightKey: Void?
 private var alignParentKey: Void?
-private var columnScaleKey: Void?
-private var rowScaleKey: Void?
 
 public final class LayoutView<Base> {
     public let base: Base

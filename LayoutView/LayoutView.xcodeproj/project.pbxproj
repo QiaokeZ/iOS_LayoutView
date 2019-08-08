@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		84452C402224DCFA00E73241 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84452C3F2224DCFA00E73241 /* Assets.xcassets */; };
-		8468E7562254942C007AB392 /* GridLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8468E7552254942C007AB392 /* GridLayoutView.swift */; };
 		8489AE63221E86DD00958C53 /* FlowViewTest2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8489AE62221E86DD00958C53 /* FlowViewTest2Controller.swift */; };
+		84B88F5422FBB4AF00B14D9C /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B88F5322FBB4AF00B14D9C /* UIView.swift */; };
 		84CFD96E221CF1B600E77F3F /* FlowLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFD96D221CF1B600E77F3F /* FlowLayoutView.swift */; };
 		84CFD977221D588A00E77F3F /* FlowLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFD976221D588A00E77F3F /* FlowLayoutViewController.swift */; };
 		84CFD97A221D590100E77F3F /* FlowViewTest1Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFD979221D590100E77F3F /* FlowViewTest1Controller.swift */; };
@@ -37,8 +37,8 @@
 
 /* Begin PBXFileReference section */
 		84452C3F2224DCFA00E73241 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8468E7552254942C007AB392 /* GridLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayoutView.swift; sourceTree = "<group>"; };
 		8489AE62221E86DD00958C53 /* FlowViewTest2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowViewTest2Controller.swift; sourceTree = "<group>"; };
+		84B88F5322FBB4AF00B14D9C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		84CFD96D221CF1B600E77F3F /* FlowLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutView.swift; sourceTree = "<group>"; };
 		84CFD976221D588A00E77F3F /* FlowLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutViewController.swift; sourceTree = "<group>"; };
 		84CFD979221D590100E77F3F /* FlowViewTest1Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowViewTest1Controller.swift; sourceTree = "<group>"; };
@@ -115,6 +115,7 @@
 				84E572322216998800572DF8 /* RelativeLayoutViewController.swift */,
 				84E5721B2216993E00572DF8 /* AppDelegate.swift */,
 				84E5721D2216993E00572DF8 /* ViewController.swift */,
+				84B88F5322FBB4AF00B14D9C /* UIView.swift */,
 				84E5721F2216993E00572DF8 /* Main.storyboard */,
 				84E572242216993F00572DF8 /* LaunchScreen.storyboard */,
 				84E572272216993F00572DF8 /* Info.plist */,
@@ -150,7 +151,6 @@
 		84E5723B2216998800572DF8 /* LayoutView */ = {
 			isa = PBXGroup;
 			children = (
-				8468E7552254942C007AB392 /* GridLayoutView.swift */,
 				84CFD96D221CF1B600E77F3F /* FlowLayoutView.swift */,
 				84E5723E2216998800572DF8 /* LinearLayoutView.swift */,
 				84E5723D2216998800572DF8 /* RelativeLayoutView.swift */,
@@ -237,6 +237,7 @@
 				84CFD96E221CF1B600E77F3F /* FlowLayoutView.swift in Sources */,
 				84E5724B2216998800572DF8 /* RelativeViewTest6Controller.swift in Sources */,
 				84E5721E2216993E00572DF8 /* ViewController.swift in Sources */,
+				84B88F5422FBB4AF00B14D9C /* UIView.swift in Sources */,
 				84CFD977221D588A00E77F3F /* FlowLayoutViewController.swift in Sources */,
 				84E572452216998800572DF8 /* RelativeLayoutViewController.swift in Sources */,
 				84CFD97A221D590100E77F3F /* FlowViewTest1Controller.swift in Sources */,
@@ -252,7 +253,6 @@
 				84E572462216998800572DF8 /* RelativeViewTest3Controller.swift in Sources */,
 				84E572432216998800572DF8 /* LinearViewTest4Controller.swift in Sources */,
 				84E572472216998800572DF8 /* RelativeViewTest4Controller.swift in Sources */,
-				8468E7562254942C007AB392 /* GridLayoutView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

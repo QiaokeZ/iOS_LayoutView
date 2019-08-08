@@ -12,46 +12,46 @@
 import UIKit
 
 class RelativeLayoutView: UIView {
-    
+
     private override init(frame: CGRect) {
         super.init(frame: .zero)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
-    
+
     init(width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.lv.width = width
         self.lv.height = height
     }
-    
+
     public func layout() {
-        setChildViewSize()
-        setChildViewOrigin()
-        setLayoutViewFrame()
+        setSubViewsSize()
+        setSubViewsOrigin()
+        setSelfFrame()
     }
 }
 
 extension RelativeLayoutView {
-    
-    private func setChildViewSize() {
+
+    private func setSubViewsSize() {
         for view in subviews {
             view.frame = .zero
-            if let linear = view as? LinearLayoutView {
-                linear.layout()
-            } else if let relative = view as? RelativeLayoutView {
-                relative.layout()
-            } else if let flow = view as? FlowLayoutView {
-                flow.layout()
-            }else{
+            if let layoutView = view as? LinearLayoutView {
+                layoutView.layout()
+            } else if let layoutView = view as? RelativeLayoutView {
+                layoutView.layout()
+            } else if let layoutView = view as? FlowLayoutView {
+                layoutView.layout()
+            } else {
                 view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
             }
         }
     }
-    
-    private func setChildViewOrigin() {
+
+    private func setSubViewsOrigin() {
         let parentSize = CGSize(width: getViewWidth(self), height: getViewHeight(self))
         for view in subviews {
             view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop)
@@ -102,55 +102,60 @@ extension RelativeLayoutView {
             }
         }
     }
-    
-    private func setLayoutViewFrame() {
-        if frame == .zero {
-            frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
-            frame.origin = CGPoint(x:lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
-        }
+
+    private func setSelfFrame() {
+        frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
+        frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
     }
-    
+
     private func getViewWidth(_ from: UIView) -> CGFloat {
-        if from.frame.width > 0 {
-            return from.frame.width
-        } else {
-            var width = from.frame.width
-            switch from.lv.width {
-            case .fill:
-                if let value = from.superview {
-                    width = value.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                        width = getViewWidth(value) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+        var width = from.frame.width
+        switch from.lv.width {
+        case .fill:
+            if let view = from.superview {
+                width = view.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+                if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
+                    if !isWrap(view.lv.width) {
+                        width = getViewWidth(view) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
                     }
                 }
-            case .pt(let value):
-                width = value
-            case .wrap:
-                width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
             }
-            return width
+        case .pt(let value):
+            width = value
+        case .wrap:
+            width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
         }
+        return width
     }
-    
+
     private func getViewHeight(_ from: UIView) -> CGFloat {
-        if from.frame.height > 0 {
-            return from.frame.height
-        } else {
-            var height = from.frame.height
-            switch from.lv.height {
-            case .fill:
-                if let value = from.superview {
-                    height = value.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                    if value is LinearLayoutView || value is RelativeLayoutView || value is FlowLayoutView {
-                        height = getViewHeight(value) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+        var height = from.frame.height
+        switch from.lv.height {
+        case .fill:
+            if let view = from.superview {
+                height = view.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+                if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
+                    if !isWrap(view.lv.height) {
+                        height = getViewHeight(view) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
                     }
                 }
-            case .pt(let value):
-                height = value
-            case .wrap:
-                height = from.subviews.map { $0.frame.maxY + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
             }
-            return height
+        case .pt(let value):
+            height = value
+        case .wrap:
+            height = from.subviews.map { $0.frame.maxY + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
+        }
+        return height
+    }
+
+    private func isWrap(_ size: LayoutSize) -> Bool {
+        switch size {
+        case .fill:
+            return false
+        case .wrap:
+            return true
+        case .pt(_):
+            return false
         }
     }
 }
