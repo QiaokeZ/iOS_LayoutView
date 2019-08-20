@@ -100,10 +100,10 @@ extension LinearLayoutView {
     }
 
     private func setSubViewsOrigin() {
-        var lastView: UIView?
+        var beforeView: UIView?
         for view in subviews {
             var size = CGSize.zero
-            if let value = lastView {
+            if let value = beforeView {
                 size = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
             }
             switch direction {
@@ -112,8 +112,6 @@ extension LinearLayoutView {
                 switch contentGravity {
                 case .centerVertical, .center:
                     view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
-                case .centerHorizontal:
-                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
                 case .bottom:
                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 default:
@@ -123,8 +121,6 @@ extension LinearLayoutView {
                 switch view.lv.gravity {
                 case .center, .centerVertical:
                     view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
-                case .centerHorizontal:
-                    view.frame.origin.x = (frame.width - view.frame.width) / 2
                 case .bottom:
                     view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
                 case .top:
@@ -137,8 +133,6 @@ extension LinearLayoutView {
                 switch contentGravity {
                 case .centerHorizontal, .center:
                     view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
-                case .centerVertical:
-                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
                 case .right:
                     view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 default:
@@ -148,8 +142,6 @@ extension LinearLayoutView {
                 switch view.lv.gravity {
                 case .center, .centerHorizontal:
                     view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
-                case .centerVertical:
-                    view.frame.origin.y = (frame.height - view.frame.height) / 2
                 case .right:
                     view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
                 case .left:
@@ -158,17 +150,17 @@ extension LinearLayoutView {
                     break
                 }
             }
-            lastView = view
+            beforeView = view
         }
         let totalSize = getSubViewsTotalSize(self)
         for view in subviews {
             switch direction {
             case .horizontal:
-                if contentGravity == .center {
+                if contentGravity == .center ||  contentGravity == .centerHorizontal{
                     view.frame.origin.x = view.frame.origin.x + (frame.width - totalSize.width) / 2
                 }
             case .vertical:
-                if contentGravity == .center {
+                if contentGravity == .center ||  contentGravity == .centerVertical{
                     view.frame.origin.y = view.frame.origin.y + (frame.height - totalSize.height) / 2
                 }
             }
