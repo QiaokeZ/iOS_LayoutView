@@ -65,6 +65,6 @@ extension LinearViewTest2Controller {
         label4.textAlignment = .center
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
-        rootView.layout()
+//        rootView.layout()
     }
 }

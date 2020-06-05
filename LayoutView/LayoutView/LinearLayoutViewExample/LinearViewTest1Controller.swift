@@ -15,7 +15,7 @@ extension LinearViewTest1Controller {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
+        let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .wrap)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.margin = 10
         view.addSubview(rootView)
@@ -66,6 +66,7 @@ extension LinearViewTest1Controller {
         label4.textAlignment = .center
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
-        rootView.layout()
+        
+//        rootView.layoutViewRoot()
     }
 }

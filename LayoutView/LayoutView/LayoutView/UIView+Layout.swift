@@ -37,7 +37,7 @@ struct LayoutAlignParent: OptionSet {
     static let right = LayoutAlignParent(rawValue: 1 << 3)
 }
 
-extension LayoutView where Base: UIView {
+extension LayoutView1 where Base: UIView {
 
     var margin: CGFloat {
         set {
@@ -230,6 +230,22 @@ extension LayoutView where Base: UIView {
             return [.none]
         }
     }
+
+    var superviews:[UIView] {
+        get {
+            var superviews = [UIView]()
+            var next:UIView? = base
+            while next != nil {
+                guard let value = next?.superview else {
+                    superviews.append(base)
+                    return superviews
+                }
+                superviews.append(value)
+                next = value
+            }
+            return superviews
+        }
+    }
 }
 
 private var marginKey: Void?
@@ -251,7 +267,7 @@ private var alignBottomKey: Void?
 private var alignRightKey: Void?
 private var alignParentKey: Void?
 
-public final class LayoutView<Base> {
+public final class LayoutView1<Base> {
     public let base: Base
     public init(_ base: Base) {
         self.base = base
@@ -264,8 +280,8 @@ public protocol LayoutViewCompatible {
 }
 
 public extension LayoutViewCompatible {
-    var lv: LayoutView<Self> {
-        get { return LayoutView(self) }
+    var lv: LayoutView1<Self> {
+        get { return LayoutView1(self) }
     }
 }
 

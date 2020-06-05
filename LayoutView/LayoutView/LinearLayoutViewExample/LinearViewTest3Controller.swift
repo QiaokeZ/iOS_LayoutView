@@ -53,6 +53,6 @@ extension LinearViewTest3Controller {
             label.backgroundColor = UIColor.random
             linearView2.addSubview(label)
         }
-        rootView.layout()
+//        rootView.layout()
     }
 }

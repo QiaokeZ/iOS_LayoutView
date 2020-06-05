@@ -37,18 +37,18 @@ class RelativeLayoutView: UIView {
 extension RelativeLayoutView {
 
     private func setSubViewsSize() {
-        for view in subviews {
-            view.frame = .zero
-            if let layoutView = view as? LinearLayoutView {
-                layoutView.layout()
-            } else if let layoutView = view as? RelativeLayoutView {
-                layoutView.layout()
-            } else if let layoutView = view as? FlowLayoutView {
-                layoutView.layout()
-            } else {
-                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
-            }
-        }
+//        for view in subviews {
+//            view.frame = .zero
+//            if let layoutView = view as? LinearLayoutView {
+//                layoutView.layout()
+//            } else if let layoutView = view as? RelativeLayoutView {
+//                layoutView.layout()
+//            } else if let layoutView = view as? FlowLayoutView {
+//                layoutView.layout()
+//            } else {
+//                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
+//            }
+//        }
     }
 
     private func setSubViewsOrigin() {

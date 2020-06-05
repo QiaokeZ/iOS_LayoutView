@@ -46,18 +46,18 @@ class FlowLayoutView: UIView {
 extension FlowLayoutView {
     
     private func setChildViewSize() {
-        for view in subviews {
-            view.frame = .zero
-            if let linear = view as? LinearLayoutView {
-                linear.layout()
-            } else if let relative = view as? RelativeLayoutView {
-                relative.layout()
-            } else if let flow = view as? FlowLayoutView {
-                flow.layout()
-            }else{
-                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
-            }
-        }
+//        for view in subviews {
+//            view.frame = .zero
+//            if let linear = view as? LinearLayoutView {
+//                linear.layout()
+//            } else if let relative = view as? RelativeLayoutView {
+//                relative.layout()
+//            } else if let flow = view as? FlowLayoutView {
+//                flow.layout()
+//            }else{
+//                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
+//            }
+//        }
     }
     
     private func setChildViewOrigin() {
