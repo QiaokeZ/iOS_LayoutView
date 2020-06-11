@@ -1,119 +1,121 @@
 //
 //  LayoutView.swift
-//  LayoutView
+//  LayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
-//  Created by admin on 2020/6/5.
-//  Copyright © 2020 zhouqiao. All rights reserved.
+//  Created by zhouqiao on 2019/1/18.
+//  Copyright © 2019 zhouqiao. All rights reserved.
+//
+//  This source code is licensed under the MIT-style license found in the
+//  LICENSE file in the root directory of this source tree.
 //
 
 import UIKit
 
-protocol LayoutViewable {
-    func layoutViewRoot()
+protocol Layoutable {
+    var parent: LayoutView { get }
+    func requestLayout()
 }
 
-class LayoutView: UIView, LayoutViewable {
-    
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    func layoutViewRoot() {
-        
-    }
-    
-    func layoutViewRootFrame() {
-          
-    }
-    
-    func layoutSubviewsOrigin() {
-        
-    }
-    
-    func layoutSubviewsSize() {
-        
-    }
-}
+extension Layoutable {
 
-extension LayoutViewable {
-    
-    public func isWrap(_ size: LayoutSize) -> Bool {
-        switch size {
-        case .fill:
-            return false
-        case .wrap:
-            return true
-        case .pt(_):
-            return false
-        }
+    func resolveSize(from: UIView) -> CGSize {
+        return CGSize(width: resolveWidth(from: from), height: resolveHeight(from: from))
     }
-    
-    public func getViewWidth(_ from: UIView) -> CGFloat {
-        var width = from.frame.width
-        switch from.lv.width {
-        case .fill:
-            if let view = from.superview {
-                width = view.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                if view.isKind(of: LayoutView.self) {
-                    if !isWrap(view.lv.width) {
-                        width = getViewWidth(view) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
+
+    func resolveWidth(from: UIView) -> CGFloat {
+        var width: CGFloat = from.frame.width
+        if width == .zero {
+            switch from.lv.width {
+            case .fill:
+                var parent: UIView? = from.superview
+                var margin = from.lv.margin * 2 + from.lv.marginLeft + from.lv.marginRight
+                while parent != nil {
+                    if let view = parent {
+                        if view.lv.width == .wrap {
+                            parent = nil
+                            break
+                        }
+                        margin += view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+                        if view.frame.width != 0 {
+                            break
+                        } else {
+                            parent = view.superview
+                        }
                     }
                 }
-            }
-        case .pt(let value):
-            width = value
-        case .wrap:
-            if let child = from as? LinearLayoutView {
-                width = getLayoutWrapViewSize(child).width
+                if let view = parent {
+                    width = view.frame.width - margin
+                }
+            case .pt(let value):
+                width = value
+            case .wrap: break
             }
         }
         return width
     }
-    
-    public func getViewHeight(_ from: UIView) -> CGFloat {
-        var height = from.frame.height
-        switch from.lv.height {
-        case .fill:
-            if let view = from.superview {
-                height = view.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                if view.isKind(of: LayoutView.self)  {
-                    if !isWrap(view.lv.height) {
-                        height = getViewHeight(view) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
+
+    func resolveHeight(from: UIView) -> CGFloat {
+        var height: CGFloat = from.frame.height
+        if height == .zero {
+            switch from.lv.height {
+            case .fill:
+                var parent: UIView? = from.superview
+                var margin = from.lv.margin * 2 + from.lv.marginTop + from.lv.marginBottom
+                while parent != nil {
+                    if let view = parent {
+                        if view.lv.width == .wrap {
+                            parent = nil
+                            break
+                        }
+                        margin += view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+                        if view.frame.height != 0 {
+                            break
+                        } else {
+                            parent = view.superview
+                        }
                     }
                 }
-            }
-        case .pt(let value):
-            height = value
-        case .wrap:
-            if let child = from as? LinearLayoutView {
-                height = getLayoutWrapViewSize(child).height
+                if let view = parent {
+                    height = view.frame.height - margin
+                }
+            case .pt(let value):
+                height = value
+            case .wrap: break
             }
         }
         return height
     }
-    
-    public func getLayoutWrapViewSize(_ from: LinearLayoutView) -> CGSize {
-        var size = CGSize.zero
-        for view in from.subviews {
-            switch from.direction {
-            case .horizontal:
-                size.width += getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
-                let height = getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
-                if height > size.height {
-                    size.height = height
-                }
-            case .vertical:
-                size.height += getViewHeight(view) + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
-                let width = getViewWidth(view) + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
-                if width > size.width {
-                    size.width = width
-                }
-            }
-        }
-        return size
-    }
 }
+
+class LayoutView: UIView, Layoutable {
+
+    var parent: LayoutView {
+        get {
+            if let parent = lv.superviews.reversed().first(where: { return $0.isKind(of: LayoutView.self) }) as? LayoutView {
+                return parent
+            }
+            return self
+        }
+    }
+
+    override func addSubview(_ view: UIView) {
+        super.addSubview(view)
+        parent.frame = .zero
+        parent.requestLayout()
+    }
+
+    func requestLayout() {
+        layoutSubviewsSize()
+        layoutSubviewsLocation()
+    }
+    
+    func updateLayout() {
+        parent.frame = .zero
+        requestLayout()
+    }
+
+    func layoutSubviewsSize() { }
+
+    func layoutSubviewsLocation() { }
+}
+

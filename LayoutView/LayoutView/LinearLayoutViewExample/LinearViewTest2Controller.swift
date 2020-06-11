@@ -7,13 +7,7 @@ class LinearViewTest2Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-    }
-}
 
-extension LinearViewTest2Controller {
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
         let rootView = LinearLayoutView(direction: .horizontal, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.margin = 10
@@ -65,6 +59,5 @@ extension LinearViewTest2Controller {
         label4.textAlignment = .center
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
-//        rootView.layout()
     }
 }

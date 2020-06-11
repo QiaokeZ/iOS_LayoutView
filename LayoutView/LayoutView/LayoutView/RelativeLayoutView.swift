@@ -2,7 +2,7 @@
 //  RelativeLayoutView.swift
 //  RelativeLayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
-//  Created by admin on 2019/1/18.
+//  Created by zhouqiao on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
 //
 //  This source code is licensed under the MIT-style license found in the
@@ -11,7 +11,7 @@
 
 import UIKit
 
-class RelativeLayoutView: UIView {
+class RelativeLayoutView: LayoutView {
 
     private override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -27,135 +27,91 @@ class RelativeLayoutView: UIView {
         self.lv.height = height
     }
 
-    public func layout() {
-        setSubViewsSize()
-        setSubViewsOrigin()
-        setSelfFrame()
-    }
-}
-
-extension RelativeLayoutView {
-
-    private func setSubViewsSize() {
-//        for view in subviews {
-//            view.frame = .zero
-//            if let layoutView = view as? LinearLayoutView {
-//                layoutView.layout()
-//            } else if let layoutView = view as? RelativeLayoutView {
-//                layoutView.layout()
-//            } else if let layoutView = view as? FlowLayoutView {
-//                layoutView.layout()
-//            } else {
-//                view.frame.size = CGSize(width: ceil(getViewWidth(view)), height: ceil(getViewHeight(view)))
-//            }
-//        }
-    }
-
-    private func setSubViewsOrigin() {
-        let parentSize = CGSize(width: getViewWidth(self), height: getViewHeight(self))
-        for view in subviews {
-            view.frame.origin = CGPoint(x: view.lv.margin + view.lv.marginLeft, y: view.lv.margin + view.lv.marginTop)
-            if let toTopView = view.lv.toTopOf {
-                view.frame.origin.y = toTopView.frame.origin.y - toTopView.lv.margin - toTopView.lv.marginTop - (view.frame.height + view.lv.margin + view.lv.marginBottom)
-            }
-            if let toLeftView = view.lv.toLeftOf {
-                view.frame.origin.x = toLeftView.frame.origin.x - toLeftView.lv.margin - toLeftView.lv.marginLeft - (view.frame.width + view.lv.margin + view.lv.marginRight)
-            }
-            if let toBottomView = view.lv.toBottomOf {
-                view.frame.origin.y = toBottomView.frame.maxY + toBottomView.lv.margin + toBottomView.lv.marginBottom + view.lv.margin + view.lv.marginTop
-            }
-            if let toRightView = view.lv.toRightOf {
-                view.frame.origin.x = toRightView.frame.maxX + toRightView.lv.margin + toRightView.lv.marginRight + view.lv.margin + view.lv.marginLeft
-            }
-            if let alignTopView = view.lv.alignTop {
-                view.frame.origin.y = alignTopView.frame.origin.y + view.lv.margin + view.lv.marginTop
-            }
-            if let alignLeftView = view.lv.alignLeft {
-                view.frame.origin.x = alignLeftView.frame.origin.x + view.lv.margin + view.lv.marginLeft
-            }
-            if let alignBottomView = view.lv.alignBottom {
-                view.frame.origin.y = alignBottomView.frame.maxY - (view.frame.height + view.lv.margin + view.lv.marginBottom)
-            }
-            if let alignRightView = view.lv.alignRight {
-                view.frame.origin.x = alignRightView.frame.maxX - (view.frame.width + view.lv.margin + view.lv.marginLeft)
-            }
-            if view.lv.alignParent.contains(.top) {
-                view.frame.origin.y = view.lv.margin + view.lv.marginTop
-            }
-            if view.lv.alignParent.contains(.left) {
-                view.frame.origin.x = view.lv.margin + view.lv.marginLeft
-            }
-            if view.lv.alignParent.contains(.bottom) {
-                view.frame.origin.y = parentSize.height - (view.frame.height + view.lv.margin + view.lv.marginBottom)
-            }
-            if view.lv.alignParent.contains(.right) {
-                view.frame.origin.x = parentSize.width - (view.frame.width + view.lv.margin + view.lv.marginRight)
-            }
-            if view.lv.gravity == .center {
-                view.frame.origin = CGPoint(x: ((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight), y: ((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom))
-            }
-            if view.lv.gravity == .centerHorizontal {
-                view.frame.origin.x = ((parentSize.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
-            }
-            if view.lv.gravity == .centerVertical {
-                view.frame.origin.y = ((parentSize.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
+    override func layoutSubviewsSize() {
+        for child in subviews {
+            child.frame = .zero
+            if let child = child as? LayoutView {
+                child.requestLayout()
+            } else {
+                child.frame.size = resolveSize(from: child)
             }
         }
     }
 
-    private func setSelfFrame() {
-        frame.size = CGSize(width: ceil(getViewWidth(self)), height: ceil(getViewHeight(self)))
-        frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
-    }
-
-    private func getViewWidth(_ from: UIView) -> CGFloat {
-        var width = from.frame.width
-        switch from.lv.width {
-        case .fill:
-            if let view = from.superview {
-                width = view.frame.width - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
-                    if !isWrap(view.lv.width) {
-                        width = getViewWidth(view) - from.lv.margin * 2 - from.lv.marginLeft - from.lv.marginRight
-                    }
-                }
+    override func layoutSubviewsLocation() {
+        let measureSize = resolveSize(from: self)
+        for child in subviews {
+            child.frame.origin = CGPoint(x: child.lv.margin + child.lv.marginLeft, y: child.lv.margin + child.lv.marginTop)
+            if let toTopView = child.lv.toTopOf {
+                child.frame.origin.y = toTopView.frame.origin.y - toTopView.lv.margin - toTopView.lv.marginTop - (child.frame.height + child.lv.margin + child.lv.marginBottom)
             }
-        case .pt(let value):
-            width = value
-        case .wrap:
-            width = from.subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
-        }
-        return width
-    }
-
-    private func getViewHeight(_ from: UIView) -> CGFloat {
-        var height = from.frame.height
-        switch from.lv.height {
-        case .fill:
-            if let view = from.superview {
-                height = view.frame.height - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                if view is LinearLayoutView || view is RelativeLayoutView || view is FlowLayoutView {
-                    if !isWrap(view.lv.height) {
-                        height = getViewHeight(view) - from.lv.margin * 2 - from.lv.marginTop - from.lv.marginBottom
-                    }
-                }
+            if let toLeftView = child.lv.toLeftOf {
+                child.frame.origin.x = toLeftView.frame.origin.x - toLeftView.lv.margin - toLeftView.lv.marginLeft - (child.frame.width + child.lv.margin + child.lv.marginRight)
             }
-        case .pt(let value):
-            height = value
-        case .wrap:
-            height = from.subviews.map { $0.frame.maxY + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
+            if let toBottomView = child.lv.toBottomOf {
+                child.frame.origin.y = toBottomView.frame.maxY + toBottomView.lv.margin + toBottomView.lv.marginBottom + child.lv.margin + child.lv.marginTop
+            }
+            if let toRightView = child.lv.toRightOf {
+                child.frame.origin.x = toRightView.frame.maxX + toRightView.lv.margin + toRightView.lv.marginRight + child.lv.margin + child.lv.marginLeft
+            }
+            if let alignTopView = child.lv.alignTop {
+                child.frame.origin.y = alignTopView.frame.origin.y + child.lv.margin + child.lv.marginTop
+            }
+            if let alignLeftView = child.lv.alignLeft {
+                child.frame.origin.x = alignLeftView.frame.origin.x + child.lv.margin + child.lv.marginLeft
+            }
+            if let alignBottomView = child.lv.alignBottom {
+                child.frame.origin.y = alignBottomView.frame.maxY - (child.frame.height + child.lv.margin + child.lv.marginBottom)
+            }
+            if let alignRightView = child.lv.alignRight {
+                child.frame.origin.x = alignRightView.frame.maxX - (child.frame.width + child.lv.margin + child.lv.marginLeft)
+            }
+            if child.lv.alignParent.contains(.top) {
+                child.frame.origin.y = child.lv.margin + child.lv.marginTop
+            }
+            if child.lv.alignParent.contains(.left) {
+                child.frame.origin.x = child.lv.margin + child.lv.marginLeft
+            }
+            if child.lv.alignParent.contains(.bottom) {
+                child.frame.origin.y = measureSize.height - (child.frame.height + child.lv.margin + child.lv.marginBottom)
+            }
+            if child.lv.alignParent.contains(.right) {
+                child.frame.origin.x = measureSize.width - (child.frame.width + child.lv.margin + child.lv.marginRight)
+            }
+            if child.lv.gravity == .center {
+                child.frame.origin = CGPoint(x: ((measureSize.width - child.frame.width) / 2) + (child.lv.marginLeft - child.lv.marginRight), y: ((measureSize.height - child.frame.height) / 2) + (child.lv.marginTop - child.lv.marginBottom))
+            }
+            if child.lv.gravity == .centerHorizontal {
+                child.frame.origin.x = ((measureSize.width - child.frame.width) / 2) + (child.lv.marginLeft - child.lv.marginRight)
+            }
+            if child.lv.gravity == .centerVertical {
+                child.frame.origin.y = ((measureSize.height - child.frame.height) / 2) + (child.lv.marginTop - child.lv.marginBottom)
+            }
         }
-        return height
+        layoutParentViewFrame()
     }
 
-    private func isWrap(_ size: LayoutSize) -> Bool {
-        switch size {
-        case .fill:
-            return false
-        case .wrap:
-            return true
-        case .pt(_):
-            return false
+    private func layoutParentViewFrame() {
+        if frame.origin == .zero {
+            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
+        }
+        if frame.size == .zero {
+            switch lv.width {
+            case .fill:
+                frame.size.width = resolveSize(from: self).width
+            case .pt(let value):
+                frame.size.width = value
+            case .wrap:
+                frame.size.width = subviews.map { $0.frame.maxX + $0.lv.margin + $0.lv.marginLeft }.max() ?? 0
+            }
+            switch lv.height {
+            case .fill:
+                frame.size.height = resolveSize(from: self).height
+            case .pt(let value):
+                frame.size.height = value
+            case .wrap:
+                frame.size.height = subviews.map { $0.frame.maxY + $0.lv.margin + $0.lv.marginBottom }.max() ?? 0
+            }
         }
     }
 }

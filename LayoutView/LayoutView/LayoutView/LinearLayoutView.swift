@@ -2,7 +2,7 @@
 //  LinearLayoutView.swift
 //  LinearLayoutView <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
-//  Created by admin on 2019/1/18.
+//  Created by zhouqiao on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
 //
 //  This source code is licensed under the MIT-style license found in the
@@ -28,18 +28,18 @@ enum LinearLayoutContentGravity {
 }
 
 class LinearLayoutView: LayoutView {
-    
+
     private(set) var direction: LinearLayoutDirection = .horizontal
     private(set) var contentGravity: LinearLayoutContentGravity = .none
-    
+
     private override init(frame: CGRect) {
         super.init(frame: .zero)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     init(direction: LinearLayoutDirection = .horizontal, contentGravity: LinearLayoutContentGravity = .none, width: LayoutSize = .fill, height: LayoutSize = .fill) {
         super.init(frame: .zero)
         self.direction = direction
@@ -47,237 +47,208 @@ class LinearLayoutView: LayoutView {
         self.lv.width = width
         self.lv.height = height
     }
-    
-    override func addSubview(_ view: UIView) {
-        super.addSubview(view)
-        guard let viewRoot = self.lv.superviews.reversed().first(where: { return $0.isKind(of: LayoutView.self) }) as? LayoutView  else { return }
-        layoutViewRoot1(of: viewRoot)
-    }
-    
-    
-    func layoutViewRoot1(of : LayoutView) {
-        
-        let rootViewSize = CGSize(width: getViewWidth(of), height: getViewHeight(of))
-        let totalWeight = of.subviews.reduce(CGFloat(0)) { (value, view) in
-            view.frame = .zero
-            return value + view.lv.weight
-        }
-        
-        let totalMarginSize = of.subviews.reduce(CGSize.zero) { (value, view) in
-            let marginWidth = value.width + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight)
-            let marginHeight = value.height + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom)
-            return CGSize(width: marginWidth, height: marginHeight)
-        }
-        print("totalWeight = \(totalWeight)")
-        print("totalMarginSize = \(totalMarginSize)")
-        
-        
-        if direction == .vertical {
-            for view in of.subviews {
-                if view.lv.weight > 0 {
-                      view.frame.size.height = max((view.lv.weight * (rootViewSize.height - totalMarginSize.height) / totalWeight), 0)
-                } else{
-                    
+
+    override func layoutSubviewsSize() {
+        let measureSize = resolveSize(from: self)
+        let (totalWeight, totalMarginWidth, totalMarginHeight, totalUsedWidth, totalUsedHeight) = subViewsState()
+        for child in subviews {
+            child.frame = .zero
+            if direction == .horizontal {
+                switch child.lv.height {
+                case .fill:
+                    child.frame.size.height = measureSize.height - (child.lv.margin * 2 + child.lv.marginTop + child.lv.marginBottom)
+                case .pt(let value):
+                    child.frame.size.height = value
+                default: break
                 }
-                
+                if child.lv.weight == 0 {
+                    switch child.lv.width {
+                    case .fill:
+                        child.frame.size.width = measureSize.width - (child.lv.margin * 2 + child.lv.marginLeft + child.lv.marginRight)
+                    case .pt(let value):
+                        child.frame.size.width = value
+                    default: break
+                    }
+                } else {
+                    let childWidth = child.lv.weight * (measureSize.width - totalMarginWidth - totalUsedWidth) / totalWeight - (child.lv.marginLeft + child.lv.marginRight)
+                    child.frame.size.width = childWidth
+                }
+            } else {
+                switch child.lv.width {
+                case .fill:
+                    child.frame.size.width = measureSize.width - (child.lv.margin * 2 + child.lv.marginLeft + child.lv.marginRight)
+                case .pt(let value):
+                    child.frame.size.width = value
+                default: break
+                }
+                if child.lv.weight == 0 {
+                    switch child.lv.height {
+                    case .fill:
+                        child.frame.size.height = measureSize.height - (child.lv.margin * 2 + child.lv.marginTop + child.lv.marginBottom)
+                    case .pt(let value):
+                        child.frame.size.height = value
+                    default: break
+                    }
+                } else {
+                    let childHeight = child.lv.weight * (measureSize.height - totalMarginHeight - totalUsedHeight) / totalWeight - (child.lv.marginTop + child.lv.marginBottom)
+                    child.frame.size.height = childHeight
+                }
             }
-            
-            
-        } else {
-            
+            if let child = child as? LayoutView {
+                child.requestLayout()
+            }
         }
-        
-        
-        
-        //        let rootViewSize = CGSize(width: getViewWidth(of), height: getViewHeight(of))
-        
-        
-   
-        
-        
-//                for view in of.subviews {
-//                    view.frame.size = CGSize(width:getViewWidth(view), height: getViewHeight(view))
-//                    if view.lv.weight > 0 {
-//                        switch direction {
-//                        case .horizontal:
-//                            view.frame.size.width = max((view.lv.weight * (rootViewSize.width - totalMarginSize.width) / totalWeight), 0)
-//                            view.lv.width = .pt(view.frame.width)
-//                        case .vertical:
-//                            view.frame.size.height = max((view.lv.weight * (rootViewSize.height - totalMarginSize.height) / totalWeight), 0)
-//                            view.lv.height = .pt(view.frame.height)
-//                        }
-//                    }
-//                    if let layoutView = view as? LayoutView{
-//                        layoutView.layoutViewRoot()
-//                    }
-//                }
-        
+        layoutParentViewFrame()
     }
-    
-    
-    
-    //    override func layoutViewRoot() {
-    ////        layoutSubviewsSize()
-    ////        layoutViewRootFrame()
-    ////        layoutSubviewsOrigin()
-    //
-    //
-    //
-    //          let rootViewSize = CGSize(width: getViewWidth(viewRoot), height: getViewHeight(viewRoot))
-    //          let totalWeight = viewRoot.subviews.reduce(CGFloat(0)) { (value, view) in
-    //              view.frame = .zero
-    //              return value + view.lv.weight
-    //          }
-    //          let totalMarginSize = viewRoot.subviews.reduce(CGSize.zero) { (value, view) in
-    //              if view.lv.weight > 0 {
-    //                  return CGSize(width: value.width + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
-    //                                height: value.height + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
-    //              } else {
-    //                  return CGSize(width: value.width + getViewWidth(view) + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
-    //                                height: value.height + getViewHeight(view) + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
-    //              }
-    //          }
-    //          for view in viewRoot.subviews {
-    //              view.frame.size = CGSize(width:getViewWidth(view), height: getViewHeight(view))
-    //              if view.lv.weight > 0 {
-    //                  switch direction {
-    //                  case .horizontal:
-    //                      view.frame.size.width = max((view.lv.weight * (rootViewSize.width - totalMarginSize.width) / totalWeight), 0)
-    //                      view.lv.width = .pt(view.frame.width)
-    //                  case .vertical:
-    //                      view.frame.size.height = max((view.lv.weight * (rootViewSize.height - totalMarginSize.height) / totalWeight), 0)
-    //                      view.lv.height = .pt(view.frame.height)
-    //                  }
-    //              }
-    //              if let layoutView = view as? LayoutView{
-    //                  layoutView.layoutViewRoot()
-    //              }
-    //          }
-    //
-    //
-    //
-    //    }
-    
-    //    override func layoutSubviewsSize() {
-    //        guard let viewRoot = self.lv.superviews.reversed().first(where: { return $0.isKind(of: LayoutView.self) }) as? LayoutView  else { return }
-    //        let rootViewSize = CGSize(width: getViewWidth(viewRoot), height: getViewHeight(viewRoot))
-    //        let totalWeight = viewRoot.subviews.reduce(CGFloat(0)) { (value, view) in
-    //            view.frame = .zero
-    //            return value + view.lv.weight
-    //        }
-    //        let totalMarginSize = viewRoot.subviews.reduce(CGSize.zero) { (value, view) in
-    //            if view.lv.weight > 0 {
-    //                return CGSize(width: value.width + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
-    //                              height: value.height + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
-    //            } else {
-    //                return CGSize(width: value.width + getViewWidth(view) + (view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight),
-    //                              height: value.height + getViewHeight(view) + (view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom))
-    //            }
-    //        }
-    //        for view in viewRoot.subviews {
-    //            view.frame.size = CGSize(width:getViewWidth(view), height: getViewHeight(view))
-    //            if view.lv.weight > 0 {
-    //                switch direction {
-    //                case .horizontal:
-    //                    view.frame.size.width = max((view.lv.weight * (rootViewSize.width - totalMarginSize.width) / totalWeight), 0)
-    //                    view.lv.width = .pt(view.frame.width)
-    //                case .vertical:
-    //                    view.frame.size.height = max((view.lv.weight * (rootViewSize.height - totalMarginSize.height) / totalWeight), 0)
-    //                    view.lv.height = .pt(view.frame.height)
-    //                }
-    //            }
-    //            if let layoutView = view as? LayoutView{
-    //                layoutView.layoutViewRoot()
-    //            }
-    //        }
-    //    }
-    //
-    //    override func layoutSubviewsOrigin() {
-    //        var beforeView: UIView?
-    //        for view in subviews {
-    //            var size = CGSize.zero
-    //            if let value = beforeView {
-    //                size = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
-    //            }
-    //            switch direction {
-    //            case .horizontal:
-    //                view.frame.origin.x = view.lv.margin + view.lv.marginLeft + size.width
-    //                switch contentGravity {
-    //                case .centerVertical, .center:
-    //                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
-    //                case .bottom:
-    //                    view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
-    //                default:
-    //                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
-    //                    break
-    //                }
-    //                switch view.lv.gravity {
-    //                case .center, .centerVertical:
-    //                    view.frame.origin.y = ((frame.height - view.frame.height) / 2) + (view.lv.marginTop - view.lv.marginBottom)
-    //                case .bottom:
-    //                    view.frame.origin.y = frame.height - view.frame.height - view.lv.margin - view.lv.marginBottom
-    //                case .top:
-    //                    view.frame.origin.y = view.lv.margin + view.lv.marginTop
-    //                default:
-    //                    break
-    //                }
-    //            case .vertical:
-    //                view.frame.origin.y = view.lv.margin + view.lv.marginTop + size.height
-    //                switch contentGravity {
-    //                case .centerHorizontal, .center:
-    //                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
-    //                case .right:
-    //                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
-    //                default:
-    //                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
-    //                    break
-    //                }
-    //                switch view.lv.gravity {
-    //                case .center, .centerHorizontal:
-    //                    view.frame.origin.x = ((frame.width - view.frame.width) / 2) + (view.lv.marginLeft - view.lv.marginRight)
-    //                case .right:
-    //                    view.frame.origin.x = frame.width - view.frame.width - view.lv.margin - view.lv.marginRight
-    //                case .left:
-    //                    view.frame.origin.x = view.lv.margin + view.lv.marginLeft
-    //                default:
-    //                    break
-    //                }
-    //            }
-    //            beforeView = view
-    //        }
-    //        let totalSize = getSubViewsTotalSize(self)
-    //        for view in subviews {
-    //            switch direction {
-    //            case .horizontal:
-    //                if contentGravity == .center ||  contentGravity == .centerHorizontal{
-    //                    view.frame.origin.x = view.frame.origin.x + (frame.width - totalSize.width) / 2
-    //                }
-    //            case .vertical:
-    //                if contentGravity == .center ||  contentGravity == .centerVertical{
-    //                    view.frame.origin.y = view.frame.origin.y + (frame.height - totalSize.height) / 2
-    //                }
-    //            }
-    //        }
-    //    }
-    //
-    //    override func layoutViewRootFrame() {
-    //        frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
-    //        frame.size = CGSize(width: getViewWidth(self), height: getViewHeight(self))
-    //    }
-    //
-    //    private func getSubViewsTotalSize(_ from: LinearLayoutView) -> CGSize {
-    //        var size = CGSize.zero
-    //         for view in from.subviews {
-    //              switch from.direction {
-    //              case .horizontal:
-    //                  size.width += view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
-    //                  size.height = view.frame.maxY + view.lv.margin + view.lv.marginBottom
-    //              case .vertical:
-    //                  size.height += view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
-    //                  size.width = view.frame.maxX + view.lv.margin + view.lv.marginRight
-    //              }
-    //          }
-    //          return size
-    //      }
+
+    override func layoutSubviewsLocation() {
+        var beforeView: UIView?
+        for child in subviews {
+            var beforeViewSize = CGSize.zero
+            if let value = beforeView {
+                beforeViewSize = CGSize(width: value.frame.maxX + value.lv.margin + value.lv.marginRight, height: value.frame.maxY + value.lv.margin + value.lv.marginBottom)
+            }
+            if direction == .horizontal {
+                child.frame.origin.x = child.lv.margin + child.lv.marginLeft + beforeViewSize.width
+                switch child.lv.gravity {
+                case .center, .centerVertical:
+                    child.frame.origin.y = (frame.height - (child.frame.height + child.lv.margin * 2 + child.lv.marginTop + child.lv.marginBottom)) / 2
+                case .bottom:
+                    child.frame.origin.y = frame.height - child.frame.height - child.lv.margin - child.lv.marginBottom
+                default:
+                    child.frame.origin.y = child.lv.margin + child.lv.marginTop
+                    break
+                }
+            } else {
+                child.frame.origin.y = child.lv.margin + child.lv.marginTop + beforeViewSize.height
+                switch child.lv.gravity {
+                case .center, .centerHorizontal:
+                    child.frame.origin.x = (frame.width - (child.frame.width + child.lv.margin * 2 + child.lv.marginLeft + child.lv.marginRight)) / 2
+                case .right:
+                    child.frame.origin.x = frame.width - child.frame.width - child.lv.margin - child.lv.marginRight
+                default:
+                    child.frame.origin.x = child.lv.margin + child.lv.marginLeft
+                    break
+                }
+            }
+            beforeView = child
+        }
+        if let beforeView = beforeView {
+            let maxSize = CGSize(width: beforeView.frame.maxX + beforeView.lv.margin + beforeView.lv.marginRight, height: beforeView.frame.maxY + beforeView.lv.margin + beforeView.lv.marginBottom)
+            for child in subviews {
+                if direction == .horizontal {
+                    let centerX = child.frame.origin.x + (frame.width - maxSize.width) / 2
+                    let centerY = (frame.height - (child.frame.height + child.lv.margin * 2 + child.lv.marginTop + child.lv.marginBottom)) / 2
+                    switch contentGravity {
+                    case .center:
+                        child.frame.origin.x = centerX
+                        if child.lv.gravity == .none {
+                            child.frame.origin.y = centerY
+                        }
+                    case .centerHorizontal:
+                        child.frame.origin.x = centerX
+                    case .centerVertical:
+                        if child.lv.gravity == .none {
+                            child.frame.origin.y = centerY
+                        }
+                    default: break
+                    }
+                } else {
+                    let centerY = child.frame.origin.y + (frame.height - maxSize.height) / 2
+                    let centerX = (frame.width - (child.frame.width + child.lv.margin * 2 + child.lv.marginLeft + child.lv.marginRight)) / 2
+                    switch contentGravity {
+                    case .center:
+                        child.frame.origin.x = centerX
+                        if child.lv.gravity == .none {
+                            child.frame.origin.y = centerY
+                        }
+                        break
+                    case .centerHorizontal:
+                        child.frame.origin.x = centerX
+                        break
+                    case .centerVertical:
+                        if child.lv.gravity == .none {
+                            child.frame.origin.y = centerY
+                        }
+                    default: break
+                    }
+                }
+            }
+        }
+    }
+
+    private func layoutParentViewFrame() {
+        if frame.origin == .zero {
+            frame.origin = CGPoint(x: lv.margin + lv.marginLeft, y: lv.margin + lv.marginTop)
+        }
+        if frame.size == .zero {
+            let maxSize = subViewsMaxSize()
+//            let marginSize = CGSize(width: lv.margin * 2 + lv.marginLeft + lv.marginRight, height: lv.margin * 2 + lv.marginTop + lv.marginBottom)
+            switch lv.width {
+            case .fill:
+                frame.size.width = resolveSize(from: self).width
+            case .pt(let value):
+                frame.size.width = value
+            case .wrap:
+                frame.size.width = maxSize.width
+            }
+            switch lv.height {
+            case .fill:
+                 frame.size.height = resolveSize(from: self).height 
+            case .pt(let value):
+                frame.size.height = value
+            case .wrap:
+                frame.size.height = maxSize.height
+            }
+        }
+    }
+
+    private func subViewsMaxSize() -> CGSize {
+        var size = CGSize.zero
+        for view in subviews {
+            switch direction {
+            case .horizontal:
+                size.width += view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+                let height = view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+                if height > size.height {
+                    size.height = height
+                }
+            case .vertical:
+                size.height += view.frame.height + view.lv.margin * 2 + view.lv.marginTop + view.lv.marginBottom
+                let width = view.frame.width + view.lv.margin * 2 + view.lv.marginLeft + view.lv.marginRight
+                if width > size.width {
+                    size.width = width
+                }
+            }
+        }
+        return size
+    }
+
+    private func subViewsState() -> (CGFloat, CGFloat, CGFloat, CGFloat, CGFloat) {
+        var state = (weight: CGFloat(0), marginWidth: CGFloat(0), marginHeight: CGFloat(0), usedWidth: CGFloat(0), usedHeight: CGFloat(0))
+        for child in subviews {
+            state.marginWidth += child.lv.margin * 2 + child.lv.marginLeft + child.lv.marginRight
+            state.marginHeight += child.lv.margin * 2 + child.lv.marginTop + child.lv.marginBottom
+            if child.lv.weight == 0 {
+                switch child.lv.width {
+                case .fill:
+                    state.usedWidth += frame.width
+                case .pt(let value):
+                    state.usedWidth += value
+                default: break
+                }
+                switch child.lv.height {
+                case .fill:
+                    state.usedHeight += frame.height
+                case .pt(let value):
+                    state.usedHeight += value
+                default: break
+                }
+            } else {
+                state.weight += child.lv.weight
+            }
+        }
+        return state
+    }
 }
 

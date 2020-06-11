@@ -7,12 +7,7 @@ class RelativeViewTest6Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-    }
-}
 
-extension RelativeViewTest6Controller {
-    
-    override func viewDidLayoutSubviews() {
         let rootView = RelativeLayoutView(width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.random
         rootView.lv.margin = 10
@@ -24,15 +19,16 @@ extension RelativeViewTest6Controller {
         linearView1.lv.gravity = .center
         rootView.addSubview(linearView1)
         
-        for _ in 0..<3{
-            let button = UIButton()
-            button.lv.height = .pt(300)
-            button.lv.width = .fill
-            button.lv.weight = 1
-            button.lv.margin = 10
-            button.backgroundColor = UIColor.random
-            linearView1.addSubview(button)
+        for i in 0..<3{
+            let label = UILabel()
+            label.lv.height = .pt(300)
+            label.lv.width = .fill
+            label.lv.weight = 1
+            label.lv.margin = 10
+            label.text = "label\(i)"
+            label.textAlignment = .center
+            label.backgroundColor = UIColor.random
+            linearView1.addSubview(label)
         }
-        rootView.layout()
     }
 }

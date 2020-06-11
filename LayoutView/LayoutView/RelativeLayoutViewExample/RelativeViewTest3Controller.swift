@@ -8,12 +8,7 @@ class RelativeViewTest3Controller: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-    }
-}
-
-extension RelativeViewTest3Controller {
     
-    override func viewDidLayoutSubviews() {
         let rootView = RelativeLayoutView(width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.random
         rootView.lv.margin = 10
@@ -63,7 +58,6 @@ extension RelativeViewTest3Controller {
         label4.text = "label4"
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
-        rootView.layout()
     }
     
 }

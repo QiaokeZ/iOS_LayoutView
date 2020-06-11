@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let items = ["LinearLayoutView", "RelativeLayoutView", "FlowLayoutView"]
+    let items = ["LinearLayoutView", "RelativeLayoutView"]
 
     override func viewDidLoad() {
         super.viewDidLoad()

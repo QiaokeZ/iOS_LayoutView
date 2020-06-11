@@ -4,18 +4,14 @@ import UIKit
 
 class LinearViewTest1Controller: UIViewController {
 
+    var rootView:LinearLayoutView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         view.backgroundColor = UIColor.white
-    }
-}
 
-extension LinearViewTest1Controller {
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .wrap)
+        rootView = LinearLayoutView(direction: .vertical, width: .fill, height: .fill)
         rootView.backgroundColor = UIColor.gray
         rootView.lv.margin = 10
         view.addSubview(rootView)
@@ -66,7 +62,11 @@ extension LinearViewTest1Controller {
         label4.textAlignment = .center
         label4.backgroundColor = UIColor.random
         rootView.addSubview(label4)
-        
-//        rootView.layoutViewRoot()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        rootView.lv.width = .pt(400)
+        rootView.lv.height = .pt(400)
+        rootView.updateLayout()
     }
 }

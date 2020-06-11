@@ -2,7 +2,7 @@
 //  UIView+Layout.swift
 //  UIView+Layout <https://github.com/QiaokeZ/iOS_Swift_LayoutView>
 //
-//  Created by admin on 2019/1/18.
+//  Created by zhouqiao on 2019/1/18.
 //  Copyright © 2019 zhouqiao. All rights reserved.
 //
 //  This source code is licensed under the MIT-style license found in the
@@ -11,7 +11,7 @@
 
 import UIKit
 
-enum LayoutSize {
+enum LayoutSize: Equatable {
     case fill
     case wrap
     case pt(CGFloat)
@@ -30,14 +30,14 @@ enum LayoutGravity {
 
 struct LayoutAlignParent: OptionSet {
     let rawValue: UInt
-    static let none = LayoutAlignParent(rawValue: 0)
+    static let none = LayoutAlignParent([])
     static let top = LayoutAlignParent(rawValue: 1 << 0)
     static let left = LayoutAlignParent(rawValue: 1 << 1)
     static let bottom = LayoutAlignParent(rawValue: 1 << 2)
     static let right = LayoutAlignParent(rawValue: 1 << 3)
 }
 
-extension LayoutView1 where Base: UIView {
+extension Layout where Base: UIView {
 
     var margin: CGFloat {
         set {
@@ -53,10 +53,10 @@ extension LayoutView1 where Base: UIView {
 
     var marginTop: CGFloat {
         set {
-            objc_setAssociatedObject(base, &marginTopKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(base, &margCGFloatopKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            if let value = objc_getAssociatedObject(base, &marginTopKey) as? CGFloat {
+            if let value = objc_getAssociatedObject(base, &margCGFloatopKey) as? CGFloat {
                 return value
             }
             return 0
@@ -122,7 +122,7 @@ extension LayoutView1 where Base: UIView {
             return .none
         }
     }
-
+    
     var height: LayoutSize {
         set {
             objc_setAssociatedObject(base, &heightKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -234,12 +234,10 @@ extension LayoutView1 where Base: UIView {
     var superviews:[UIView] {
         get {
             var superviews = [UIView]()
+            superviews.append(base)
             var next:UIView? = base
             while next != nil {
-                guard let value = next?.superview else {
-                    superviews.append(base)
-                    return superviews
-                }
+                guard let value = next?.superview else { return superviews }
                 superviews.append(value)
                 next = value
             }
@@ -249,7 +247,7 @@ extension LayoutView1 where Base: UIView {
 }
 
 private var marginKey: Void?
-private var marginTopKey: Void?
+private var margCGFloatopKey: Void?
 private var marginLeftKey: Void?
 private var marginBottomKey: Void?
 private var marginRightKey: Void?
@@ -267,22 +265,22 @@ private var alignBottomKey: Void?
 private var alignRightKey: Void?
 private var alignParentKey: Void?
 
-public final class LayoutView1<Base> {
+public final class Layout<Base> {
     public let base: Base
     public init(_ base: Base) {
         self.base = base
     }
 }
 
-public protocol LayoutViewCompatible {
+public protocol LayoutCompatible {
     associatedtype CompatibleType
     var lv: CompatibleType { get }
 }
 
-public extension LayoutViewCompatible {
-    var lv: LayoutView1<Self> {
-        get { return LayoutView1(self) }
+public extension LayoutCompatible {
+    var lv: Layout<Self> {
+        get { return Layout(self) }
     }
 }
 
-extension UIView: LayoutViewCompatible { }
+extension UIView: LayoutCompatible { }
