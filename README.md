@@ -59,7 +59,7 @@ label4.lv.gravity = .right
 label4.textAlignment = .center
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
-rootView.layout() //开始布局
+
 ```
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0acm5bdljj30n01dsdiu.jpg" width="30%" height="50%"/>
 
@@ -116,7 +116,6 @@ label4.lv.gravity = .bottom
 label4.textAlignment = .center
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
-rootView.layout() //开始布局
 ```
 <img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g0acmpwzx5j30n01ds41w.jpg" width="30%" height="50%"/>
 
@@ -160,7 +159,6 @@ for i in 0..<3{
     label.backgroundColor = UIColor.random
     linearView2.addSubview(label)
 }
-rootView.layout() //开始布局
 ```
 <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0acsoiruwj30n01dsgpj.jpg" width="30%" height="50%"/>
 
@@ -219,7 +217,6 @@ for i in 0..<3{
     label.backgroundColor = UIColor.random
     linearView5.addSubview(label)
 }
-rootView.layout() //开始布局
 ```
 <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0e35xr46wj30n01ds424.jpg" width="30%" height="50%"/>
 
@@ -272,7 +269,6 @@ label4.lv.gravity = .centerHorizontal
 label4.text = "label4"
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
-rootView.layout() //开始布局
 ```
 <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g0ak1wl34dj30n01dswhb.jpg" width="30%" height="50%"/>
 
@@ -331,7 +327,6 @@ label4.lv.toRightOf = label
 label4.text = "label4"
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
-rootView.layout() //开始布局
 ```
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0ak5uvz7wj30n01dsjud.jpg" width="30%" height="50%"/>
 
@@ -385,7 +380,6 @@ label4.lv.alignRight = label
 label4.text = "label4"
 label4.backgroundColor = UIColor.random
 rootView.addSubview(label4)
-rootView.layout() //开始布局
 ```
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0akefmawdj30n01dsdiu.jpg" width="30%" height="50%"/>
 
@@ -434,7 +428,6 @@ label3.text = "label3"
 label3.textAlignment = .center
 label3.backgroundColor = UIColor.random
 rootView.addSubview(label3)
-rootView.layout() //开始布局
 ```
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0akhjueg7j30n01dswh8.jpg" width="30%" height="50%"/>
 
@@ -537,6 +530,5 @@ label8.text = "label8"
 label8.textAlignment = .center
 label8.backgroundColor = UIColor.random
 rootView.addSubview(label8)
-rootView.layout() //开始布局
 ```
 <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g0akl1r3s6j30n01dsn0o.jpg" width="30%" height="50%"/>
